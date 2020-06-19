@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>Loading - Please wait...</title>
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+		<script type="text/javascript" src="js/external/jquery.min.js"></script>
+  		<script type="text/javascript" src="js/external/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="js/boot.js"></script>
+		<script type="text/javascript" src="js/design.js"></script>
+		<script type="text/javascript" src="js/backup_restore_sys.js"></script>
+		<script type="text/javascript" src="js/buildEmu.js"></script>
+	</head>
+	<script type="text/javascript">
+		window.onload = function(){
+			RJX_Toolset_STARTUP();
+		}
+	</script>
+	<body>
+		<!-- Main Div -->
+		<div id="MAIN_DIV" class="MAIN_DIV_CANVAS">
+			<!-- Main menu -->
+			<img src="img/logo.png" id="LOGO_FUNDO" class="logoFundo">
+			<div class="APP_MAIN_MENU">
+				<!-- Menu Bar -->
+				<div class="MENU_TOP">
+					<input type="button" class="BTN_MAIN" id="BTN_RJX_UPD" title="Click here to update the emulator" onclick="RJX_updateCheck();" value="Update EMU">
+					<input type="button" class="BTN_MAIN" id="BTN_RJX_CJX" title="Click here to change github branch" onclick="RJX_CHANGE_BRANCH();" value="Change Branch">
+					<input type="button" class="BTN_MAIN" id="BTN_RJX_DOT" title="Click here to change DotNet branch" onclick="RJX_CHANGE_DOT();" value="Change DotNet Path">
+					<input type="button" class="BTN_MAIN" id="BTN_EMU_BCK" title="Click here to backup EMU settings" onclick="RJX_backupSys();" value="Backup Settings">
+					<input type="button" class="BTN_MAIN" id="BTN_EMU_RES" title="Click here to restore EMU settings" onclick="RJX_restoreSys();" value="Restore Settings">
+					<!-- Right -->
+					<input type="button" class="BTN_MAIN right" id="BTN_MISC_REL" title="Click here to reload this application" onclick="RJX_RELOAD();" value="Reload App">
+					<input type="button" class="BTN_MAIN right" id="BTN_MISC_EXT" title="Click here to close this application" onclick="RJX_EXIT();" value="Exit">
+					<input type="button" class="BTN_MAIN right" id="BTN_MISC_ABT" title="Click here to see about page" onclick="RJX_ABOUT(0);" value="About">
+					<div id="DIV_PLZ_WAIT" class="DIV_PLZ_WAIT">Please wait...</div>
+				</div>
+			</div>
+			<!-- INFOS -->
+			<div id="DIV_INFOS" class="DIV_INFOS">
+				<div class="inner_infos" id="INNER_INFOS">
+					<center><font class="TITLE">Current Info</font></center><br>
+					DotNet Path: <font id="LBL_DOTNET_PATH" class="adjustText">Undefined</font><br>
+					Ryujinx Path: <font id="LBL_RYU_PATH" class="adjustText">Undefined</font>
+					<div class="SEPARADOR"></div>
+					GitHub Branch: <font id="LBL_GH_BRANCH" class="adjustText">master</font>
+					<div class="SEPARADOR"></div>
+					Settings Exists: <font id="LBL_NAND_EXISTS" class="adjustText">no</font><br>
+					Settings Path: <font id="LBL_NAND_PATH" class="adjustText">Undefined</font>
+					<div class="SEPARADOR"></div>
+					Last Backup: <font id="LBL_LAST_BCK" class="adjustText">N/A</font>
+				</div>
+				<!-- About -->
+				<div id="DIV_ABOUT" class="inner_infos" style="display: none;">
+					<center>
+						<img src="img/logo.png" id="LOGO_ABOUT" class="LOGO_ABOUT"><br>
+						<font class="TITLE">RJX_Toolset</font><br>
+						Version: <font id="LBL_APP_VER">???</font><br>
+						Created By: @TheMitoSan<br><br>
+						This app does not have any connection with Ryujinx application or Nintendo brand.<br>
+						<input type="button" class="BTN_CLOSE_ABOUT" value="Go Back" onclick="RJX_ABOUT(1);">
+					</center>
+				</div>
+			</div>
+			<!-- ProgressBar -->
+			<div class="Tab_PROGRESSBAR" id="Tab_PROGRESSBAR">
+				Progress: <font id="LBL_PROGRESSBAR_PERCENTAGE">100%</font>
+			</div>
+			<div id="PROGRESSBAR_DIV" class="PROGRESSBAR_DIV">
+				<div id="PB_PERCENTAGE" class="PERCENTAGE_OK">Process Complete!</div>
+			</div>
+			<!-- Log -->
+			<div class="APP_LOG" id="APP_LOG">
+				<!-- Log goes here -->
+			</div>
+		</div>
+	</body>
+</html>

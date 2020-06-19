@@ -1,0 +1,29 @@
+{
+  "main": "App/index.htm",
+  "name": "RJX_Toolset",
+  "description": "A (useless) tool to manage Ryujinx emulator files",
+  "js-flags": "--disable-devtools --disable-web-security --allow-file-access-from-files --allow-file-access",
+  "version": "1.0.0",
+  "keywords": [
+    "Software",
+    "node-webkit"
+  ],
+  "window": {
+    "title": "Loading...",
+    "icon": "App/img/logo.png",
+    "position": "center",
+    "fullscreen": false,
+    "resizable": false,
+    "min_width": 800,
+    "min_height": 600,
+    "max_width": 800,
+    "max_height": 600,
+    "toolbar": false,
+    "frame": true,
+    "width": 800,
+    "height": 600
+  },
+  "webkit": {
+    "plugin": true
+  }
+}

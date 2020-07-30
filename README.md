@@ -24,4 +24,5 @@ The way(?) to deal with Ryujinx files!
 - <a href="https://jqueryui.com/">jQuery UI</a>
 
 ¹ - To compile the code locally, you need a specific version of dotnet sdk on your system
+
 ² - To test if your system have Xcopy: Open cmd, type "xcopy" without quotes and hit enter. If everything is ok, it should return "Invalid number of parameters 0 File(s) copied"

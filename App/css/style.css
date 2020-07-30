@@ -20,15 +20,20 @@
 }
 body{
 	color: #fff;
-	overflow: none;
+	overflow: hidden;
 	user-select: none;
 	background-image: linear-gradient(to bottom, #251750, #000);
+}
+img{
+	user-select: none;
+	-webkit-user-drag: none;
 }
 /*
 	Divs
 */
 .APP_LOG{
 	left: 0px;
+	z-index: 2;
 	top: 460px;
 	width: 100%;
 	color: #fff;
@@ -45,9 +50,20 @@ body{
 	font-family: monospace;
 	text-shadow: 0 0 10px #0f0;
 }
+.LOG_SEPARATOR{
+	width: 86%;
+    height: 2px;
+    margin-top: 4px;
+    margin-left: 10px;
+    margin-bottom: 4px;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+    background-image: linear-gradient(to right, #0f0, #0000);
+}
 .APP_MAIN_MENU{
 	top: 0px;
 	left: 0px;
+	z-index: 2;
 	color: #fff;
 	width: 100%;
 	height: 300px;
@@ -65,7 +81,7 @@ body{
 	background-image: linear-gradient(to right, #444, #666);
 }
 .Tab_PROGRESSBAR{
-	z-index: 0;
+	z-index: 2;
 	top: 390px;
 	left: 10px;
 	width: 111px;
@@ -81,7 +97,7 @@ body{
 .PROGRESSBAR_DIV{
 	left: 4px;
 	top: 412px;
-	z-index: 1;
+	z-index: 2;
 	height: 40px;
 	width: 790px;
 	user-select: none;
@@ -91,6 +107,8 @@ body{
 }
 .PERCENTAGE{
 	width: 1%;
+	z-index: 2;
+	color: #fff;
 	height: 22px;
 	margin-top: 6px;
 	margin-left: 6px;
@@ -103,6 +121,7 @@ body{
 	background-image: linear-gradient(to right, #0a0, #0f0);
 }
 .PERCENTAGE_OK{
+	z-index: 2;
 	width: 778px;
 	height: 22px;
 	margin-top: 6px;
@@ -118,6 +137,7 @@ body{
 .DIV_INFOS{
 	top: 52px;
 	left: 4px;
+	z-index: 2;
 	color: #fff;
 	width: 790px;
 	height: 330px;
@@ -126,6 +146,26 @@ body{
 	border-radius: 6px;
 	background-color: #0009;
 	box-shadow: 0 0 10px #000;
+}
+.DIV_WAIT_MID{
+	z-index: 2;
+	margin-top: 122px;
+    text-shadow: 0 0 10px #07b2ff;
+}
+.PB_MINI{
+	z-index: 2;
+    height: 4px;
+	position: absolute;
+    border-radius: 6px;
+    background-color: #0f0;
+    width: calc(0% - 20px);
+    box-shadow: 0 0 10px #0a0;
+}
+.DIV_LABELS_SETTINGS{
+    left: 120px;
+    width: 506px;
+    position: sticky;
+	display: inline-flex;
 }
 .inner_infos{
 	padding-top: 10px;
@@ -139,20 +179,34 @@ body{
 	border-radius: 2px;
 	background-image: linear-gradient(to right, #fff, #0000);
 }
-.DIV_PLZ_WAIT{
-    top: 11px;
-    left: 364px;
-	display: none;
-	user-select: none;
-	position: absolute;
+/*
+	Select
+*/
+.SELECT_SETTINGS{
+	z-index: 2;
+    color: #000;
+	height: 22px;
+    width: 663px;
+    cursor: pointer;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    border-radius: 4px;
+    background-color: #ddd;
+    text-shadow: 0 0 10px #aaa;
+    background-image: linear-gradient(to bottom, #fdfdfd, #b0b0b0);
+}
+.SELECT_SETTINGS:active{
+	background-image: linear-gradient(to bottom, #b0b0b0, #fdfdfd);
 }
 /*
-	Botões
+	Buttons
 */
 .BTN_MAIN{
+	z-index: 2;
 	color: #fff;
 	height: 40px;
 	border: none;
+	cursor: pointer;
 	text-shadow: 0 0 10px #222;
 	background-image: linear-gradient(to bottom, #b5b5b5, #7f7f7f);
 }
@@ -162,10 +216,12 @@ body{
 	background-image: linear-gradient(to bottom, #7f7f7f, #b5b5b5);	
 }
 .BTN_CLOSE_ABOUT{
+	z-index: 2;
 	color: #fff;
 	width: 110px;
 	height: 26px;
 	border: none;
+	cursor: pointer;
 	margin-top: 4px;
 	border-radius: 4px;
 	box-shadow: 0 0 10px #01bdf5;
@@ -180,19 +236,84 @@ body{
 	box-shadow: 0 0 10px #68daff;
 	background-image: linear-gradient(#008bcc, #28b8f1, #008bcc);
 }
+.BTN_UPDATE{
+	z-index: 2;
+	width: 400px;
+    height: 40px;
+    border: none;
+	cursor: pointer;
+    border-radius: 4px;
+	box-shadow: 0 0 20px #0089df;
+    text-shadow: 0 0 10px #a9a9a9;
+    background-image: linear-gradient(to bottom, #eee, #999);
+}
+.BTN_UPDATE:active{
+	border-radius: 6px;
+	box-shadow: 0 0 40px #0089df;
+    text-shadow: 0 0 10px #fefefe;
+    background-image: linear-gradient(to bottom, #999, #eee);
+}
+.BTN_SETTINGS{
+	z-index: 2;
+    left: 628px;
+    border: none;
+	cursor: pointer;
+    min-width: 152px;
+    border-radius: 2px;
+	position: absolute;
+    text-shadow: 0 0 10px #888;
+    background-image: linear-gradient(to bottom, #fff, #aeaeae);
+}
+.BTN_SETTINGS:active{
+	text-shadow: 0 0 10px #fff;
+    background-image: linear-gradient(to bottom, #aeaeae, #fff);
+}
 /*
 	Imgs
 */
 .logoFundo{
     top: 6px;
+    z-index: 0;
     left: 202px;
 	width: 400px;
     opacity: 0.6;
-    filter: blur(3px);
+    position: absolute;
+    filter: blur(1.4px);
+}
+.FRAME{
+    top: 0px;
+    left: 0px;
+	z-index: 1;
+    width: 100%;
+    height: 100%;
     position: absolute;
 }
 .LOGO_ABOUT{
 	width: 170px;
+}
+/*
+	Labels
+*/
+.LBL_UP_DOWN{
+	font-size: 30px;
+}
+.LBL_SUCCESS{
+	color: #0f0;
+    text-shadow: 0 0 10px #00ab00;
+}
+.LBL_FAIL{
+	color: #f00;
+	text-shadow: 0 0 10px #300;
+}
+.LBL_RUNNING{
+    color: #ff8d00;
+    text-shadow: 0 0 10px #ff8d00;
+}
+.LBL_CHECK_FIX{
+    display: block;
+	cursor: pointer;
+    margin-left: 24px;
+    margin-top: -20px;
 }
 /*
 	Other
@@ -209,4 +330,14 @@ body{
 .adjustText{
 	left: 120px;
 	position: sticky;
+}
+.adjustText_2{
+	left: 112px;
+	position: sticky;
+}
+.none{
+	display: none;
+}
+.user-can-select{
+	user-select: all;
 }

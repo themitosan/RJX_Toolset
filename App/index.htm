@@ -10,6 +10,7 @@
 		<script type="text/javascript" src="js/design.js"></script>
 		<script type="text/javascript" src="js/backup_restore_sys.js"></script>
 		<script type="text/javascript" src="js/buildEmu.js"></script>
+		<script type="text/javascript" src="js/updateAppVeyor.js"></script>
 	</head>
 	<script type="text/javascript">
 		window.onload = function(){
@@ -19,46 +20,84 @@
 	<body>
 		<!-- Main Div -->
 		<div id="MAIN_DIV" class="MAIN_DIV_CANVAS">
-			<!-- Main menu -->
+			<img src="img/frame.png" id="FRAME_FUNDO" class="FRAME">
 			<img src="img/logo.png" id="LOGO_FUNDO" class="logoFundo">
-			<div class="APP_MAIN_MENU">
+			<!-- Main menu -->
+			<div class="APP_MAIN_MENU none" id="DIV_TOP_MENU">
 				<!-- Menu Bar -->
 				<div class="MENU_TOP">
-					<input type="button" class="BTN_MAIN" id="BTN_RJX_UPD" title="Click here to update the emulator" onclick="RJX_updateCheck();" value="Update EMU">
-					<input type="button" class="BTN_MAIN" id="BTN_RJX_CJX" title="Click here to change github branch" onclick="RJX_CHANGE_BRANCH();" value="Change Branch">
-					<input type="button" class="BTN_MAIN" id="BTN_RJX_DOT" title="Click here to change DotNet branch" onclick="RJX_CHANGE_DOT();" value="Change DotNet Path">
-					<input type="button" class="BTN_MAIN" id="BTN_EMU_BCK" title="Click here to backup EMU settings" onclick="RJX_backupSys();" value="Backup Settings">
-					<input type="button" class="BTN_MAIN" id="BTN_EMU_RES" title="Click here to restore EMU settings" onclick="RJX_restoreSys();" value="Restore Settings">
+					<input type="button" class="BTN_MAIN" id="BTN_RJX_0" title="Click here to see main info" onclick="RJX_MENU(2);" value="Main Info">
+					<input type="button" class="BTN_MAIN" id="BTN_RJX_1" title="Click here to change github branch" onclick="RJX_MENU(1);" value="Settings">
 					<!-- Right -->
-					<input type="button" class="BTN_MAIN right" id="BTN_MISC_REL" title="Click here to reload this application" onclick="RJX_RELOAD();" value="Reload App">
-					<input type="button" class="BTN_MAIN right" id="BTN_MISC_EXT" title="Click here to close this application" onclick="RJX_EXIT();" value="Exit">
-					<input type="button" class="BTN_MAIN right" id="BTN_MISC_ABT" title="Click here to see about page" onclick="RJX_ABOUT(0);" value="About">
-					<div id="DIV_PLZ_WAIT" class="DIV_PLZ_WAIT">Please wait...</div>
+					<input type="button" class="BTN_MAIN right" id="BTN_RJX_2" title="Click here to update all infos" onclick="RJX_RELOAD();" value="Refresh">
+					<input type="button" class="BTN_MAIN right" id="BTN_RJX_3" title="Click here to see about page" onclick="RJX_MENU(0);" value="About">
 				</div>
 			</div>
 			<!-- INFOS -->
-			<div id="DIV_INFOS" class="DIV_INFOS">
-				<div class="inner_infos" id="INNER_INFOS">
-					<center><font class="TITLE">Current Info</font></center><br>
-					DotNet Path: <font id="LBL_DOTNET_PATH" class="adjustText">Undefined</font><br>
-					Ryujinx Path: <font id="LBL_RYU_PATH" class="adjustText">Undefined</font>
-					<div class="SEPARADOR"></div>
-					GitHub Branch: <font id="LBL_GH_BRANCH" class="adjustText">master</font>
-					<div class="SEPARADOR"></div>
-					Settings Exists: <font id="LBL_NAND_EXISTS" class="adjustText">no</font><br>
-					Settings Path: <font id="LBL_NAND_PATH" class="adjustText">Undefined</font>
-					<div class="SEPARADOR"></div>
-					Last Backup: <font id="LBL_LAST_BCK" class="adjustText">N/A</font>
-				</div>
+			<div id="DIV_INFOS" class="DIV_INFOS none">
 				<!-- About -->
-				<div id="DIV_ABOUT" class="inner_infos" style="display: none;">
+				<div class="inner_infos none" id="DIV_ID_0">
 					<center>
 						<img src="img/logo.png" id="LOGO_ABOUT" class="LOGO_ABOUT"><br>
 						<font class="TITLE">RJX_Toolset</font><br>
 						Version: <font id="LBL_APP_VER">???</font><br>
 						Created By: @TheMitoSan<br><br>
 						This app does not have any connection with Ryujinx application or Nintendo brand.<br>
-						<input type="button" class="BTN_CLOSE_ABOUT" value="Go Back" onclick="RJX_ABOUT(1);">
+						<input type="button" class="BTN_CLOSE_ABOUT" id="BTN_CLOSE_ABOUT" value="Go Back">
+					</center>
+				</div>
+				<!-- Settings -->
+				<div class="inner_infos none" id="DIV_ID_1">
+					<center><font class="TITLE">Settings</font></center>
+					Update Method: <select class="SELECT_SETTINGS" id="SET_UPDATE_METHOD" onchange="RJX_SET_COMP_METHOD();">
+						<option value="0">Update From AppVeyor Official Builds</option>
+						<option value="1">Update Downloading / Compiling code from a custom branch</option>
+					</select><br>
+					DotNet Path: <div class="DIV_LABELS_SETTINGS"><font id="LBL_DOTNET_PATH" class="adjustText user-can-select">Undefined</font></div>
+					<input type="button" class="BTN_SETTINGS" value="Edit DotNet Path" onclick="RJX_CHANGE_DOT();"><br>
+					Ryujinx Path: <div class="DIV_LABELS_SETTINGS"><font id="LBL_RYU_PATH" class="adjustText user-can-select">Undefined</font></div>
+					<input type="button" class="BTN_SETTINGS" value="Edit Ryujinx Path" onclick="RJX_CHANGE_EMUPATH();">
+					<div class="SEPARADOR"></div>
+					GitHub Branch: <font id="LBL_GH_BRANCH" class="adjustText">Undefined</font>
+					<input type="button" class="BTN_SETTINGS" value="Change GitHub Branch" onclick="RJX_CHANGE_BRANCH();"><br>
+					<div class="SEPARADOR"></div>
+					Settings Exists: <font id="LBL_NAND_EXISTS" class="adjustText">Undefined</font><br>
+					Settings Path: <font id="LBL_NAND_PATH" class="adjustText user-can-select">Undefined</font>
+					<div class="SEPARADOR"></div>
+					<input type="checkbox" id="CHECK_DECOMP_SHARE" onchange="RJX_SAVE_CONFS();">
+					<div class="LBL_CHECK_FIX" onclick="DESIGN_CHECKBOX('CHECK_DECOMP_SHARE');">
+						 - Decompress Share Folder (Set this option off to make extraction more faster!)
+					</div>
+					<div class="SEPARADOR"></div>
+					Last Backup: <font id="LBL_LAST_BCK" class="adjustText">N/A</font>
+					<input type="button" class="BTN_SETTINGS" value="Backup Settings" onclick="RJX_backupSys();"><br>
+					<input type="button" class="BTN_SETTINGS" value="Restore Settings" onclick="RJX_restoreSys();">
+				</div>
+				<!-- Wait Menu -->
+				<div class="inner_infos none" id="DIV_ID_3">
+					<div class="DIV_WAIT_MID" id="DIV_WAIT_MID">
+						<center>
+							<font class="TITLE">Please Wait</font><br>
+							<font id="LBL_WAIT_STATUS">???</font>
+						</center>
+					</div>
+				</div>
+				<!-- Main Info (AppVeyor) -->
+				<div class="inner_infos none" id="DIV_ID_2">
+					<center>
+						<font class="TITLE">Last Update</font><br>
+						Branch: <font id="LBL_BUILD_BRX">Undefined</font>
+					</center><br>
+					Current Build: <font id="LBL_BUILD_COMPNUM" class="adjustText_2">Undefined</font><br>
+					Author: <font id="LBL_BUILD_AUT" class="adjustText_2">Undefined</font><br>
+					Description: <font id="LBL_BUILD_DESC" class="adjustText_2">Undefined</font>
+					<div class="SEPARADOR"></div>
+					Build Number: <font id="LBL_BUILD_NUMBER" class="adjustText_2">Undefined</font><br>
+					Build ID: <font id="LBL_BUILD_ID" class="adjustText_2">Undefined</font><br>
+					Build OS: <font id="LBL_BUILD_OS" class="adjustText_2">Undefined</font><br>
+					Build Status: <font id="LBL_BUILD_STATUS" class="adjustText_2">Undefined</font><br>
+					<center>
+						<br><input type="button" class="BTN_UPDATE none" id="BTN_BIG_UPDATE" value="Update Ryujinx" onclick="RJX_UPDATE();">
 					</center>
 				</div>
 			</div>

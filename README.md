@@ -3,6 +3,8 @@
 # RJX_Toolset
 The way(?) to deal with Ryujinx files!
 
+<img src="https://raw.githubusercontent.com/themitosan/RJX_Toolset/master/App/img/print.png">
+
 ## Features
 - Update the emulator by using AppVeyor or Compiling the code locally¹
 - You can set a custom branch to keep your emulator updated!

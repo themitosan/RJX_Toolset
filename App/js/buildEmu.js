@@ -137,6 +137,9 @@ function RJX_finishUpdate(){
 	}, 1100);
 }
 function RJX_doneUpdate(){
+	if (APP_FS.existsSync(APP_PATH + '\\Update\\' + RJX_UPFILE) === true){
+		APP_FS.unlinkSync(APP_PATH + '\\Update\\' + RJX_UPFILE);
+	}
 	document.title = RJX_logonText;
 	clearInterval(RJX_TEMP_INTERVAL);
 	process.chdir(APP_PATH);

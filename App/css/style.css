@@ -45,7 +45,7 @@ img{
 }
 .LOG_ITEM{
 	color: #0f0;
-	user-select: all;
+	user-select: none;
 	padding-left: 10px;
 	font-family: monospace;
 	text-shadow: 0 0 10px #0f0;
@@ -339,5 +339,5 @@ img{
 	display: none;
 }
 .user-can-select{
-	user-select: all;
+	user-select: all !important;
 }

@@ -1,9 +1,9 @@
 {
   "main": "App/index.htm",
   "name": "RJX_Toolset",
-  "description": "A (useless) tool to manage Ryujinx emulator files",
+  "description": "A tool to manage Ryujinx emulator files",
   "js-flags": "--disable-devtools --disable-web-security --allow-file-access-from-files --allow-file-access",
-  "version": "1.0.0",
+  "version": "1.1.1",
   "keywords": [
     "Software",
     "node-webkit"

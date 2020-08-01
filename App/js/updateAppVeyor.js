@@ -11,19 +11,19 @@ function RJX_getLastBuildInfo(){
 	try{
 		RJX_UPDATE_PROGRESSBAR('50%', 0);
 		document.title = RJX_logonText + ' - Please Wait...';
-		RJX_addLog('INFO - Getting latest build info, please wait...', true);
+		RJX_addLog('INFO - Getting latest build info, please wait...');
 		fetch(RJX_APPV_XML).then(resp => resp.json()).then(dat => BUILD_JSON = dat);
 		RJX_FETCH_TICK = setInterval(function(){
 			if (BUILD_JSON !== undefined){
-				RJX_addLog('INFO - Getting latest build info: Done!', true);
+				RJX_addLog('INFO - Getting latest build info: done!');
 				RJX_UPDATE_PROGRESSBAR('Process Complete!', 1);
 				RJX_DESIGN_UPDATEBUILDINFO();
 				clearInterval(RJX_FETCH_TICK);
 			}
 		}, 500);
 	} catch (err){
-		RJX_addLog('ERROR - Unable to get latest build info!', true);
-		RJX_addLog('Reason: ' + err, true);
+		RJX_addLog('ERROR - Unable to get latest build info!');
+		RJX_addLog('Reason: ' + err);
 	}
 }
 /*
@@ -51,7 +51,7 @@ function RJX_updateFromAppVeyor(){
 	if (APPV_CANUPDATE === true){
 		RJX_APPV_getFirstDown();
 	} else {
-		RJX_addLog('ERROR - Unable to download update!', true);
+		RJX_addLog('ERROR - Unable to download update!');
 		RJX_addLog('Reason: ' + APPV_CANT_REASON);
 	}
 }
@@ -97,9 +97,11 @@ function RJX_APPV_decompressEmu(){
 	$('#DIV_WAIT_MID').css({'margin-top': '122px'});
 	// Decompress Share Folder
 	if (RJX_DECOMP_SHARE === true){
+		RJX_addLog('Extracting emulator files (with share folder)');
 		RJX_UPDATE_WAIT('Decompressing files<br>This <i>may</i> take a while...');
 		RJX_runExternalSoftware(RJX_7Z_PATH, ['x', APP_PATH + '\\Update\\' + RJX_UPFILE, '-o' + APP_PATH + '\\Update']);
 	} else {
+		RJX_addLog('Extracting emulator files (without share folder)');
 		RJX_UPDATE_WAIT('Decompressing files<br>This <i>probably</i> gonna be faster than usual...');
 		RJX_runExternalSoftware(RJX_7Z_PATH, ['x', APP_PATH + '\\Update\\' + RJX_UPFILE, '-o' + APP_PATH + '\\Update', '-xr!publish\\share\\*']);
 	}
@@ -115,7 +117,8 @@ function RJX_APPV_moveEmu(){
 	clearInterval(RJX_TEMP_INTERVAL);
 	RJX_UPDATE_PROGRESSBAR('80%', 0);
 	RJX_UPDATE_WAIT('Moving emulator files');
-	RJX_runExternalSoftware('cmd', ['/C', 'xcopy', APP_PATH + '\\Update\\publish\\', RJX_EMUPATH, '/E', '/H', '/C', '/I']);
+	RJX_addLog('Moving emulator files...');
+	RJX_runExternalSoftware('cmd', ['/C', 'xcopy', APP_PATH + '\\Update\\publish\\', RJX_EMUPATH, '/E', '/H', '/C', '/I', '/Y']);
 	RJX_TEMP_INTERVAL = setInterval(function(){
 		if (EXTERNAL_APP_RUNNING === false){
 			RJX_APPV_removeLeftOver();
@@ -128,6 +131,7 @@ function RJX_APPV_removeLeftOver(){
 	clearInterval(RJX_TEMP_INTERVAL);
 	RJX_UPDATE_PROGRESSBAR('90%', 0);
 	RJX_UPDATE_WAIT('Removing leftover files');
+	RJX_addLog('Removing leftover files');
 	APP_FS.unlinkSync(APP_PATH + '\\Update\\' + RJX_UPFILE);
 	RJX_deleteFolderRecursive(APP_PATH + '\\Update\\publish');
 	RJX_TEMP_INTERVAL = setInterval(function(){

@@ -7,7 +7,7 @@ var APP_FS;
 var APP_PATH;
 var APP_LOG = '';
 var APP_CONGRATZ = 0;
-var APP_VERSION = '1.1';
+var APP_VERSION = '1.1.1';
 var MAIN_exludeFileFormats = [
 	'.xci',
 	'.nsp',
@@ -63,10 +63,10 @@ function getFileName(file){
 function RJX_Toolset_STARTUP(){
 	try{
 		APP_FS = require('fs');
-		document.title = RJX_logonText;
 		APP_PATH = process.cwd();
-		console.info(RJX_logonText);
 		RJX_addLog(RJX_logonText);
+		console.info(RJX_logonText);
+		document.title = RJX_logonText;
 		if (nw.process.arch !== 'ia32'){
 			RJX_7Z_PATH = APP_PATH + '\\App\\tools\\7z\\64\\7za.exe';
 			RJX_addLog('Running on x64 mode');
@@ -74,7 +74,9 @@ function RJX_Toolset_STARTUP(){
 			RJX_7Z_PATH = APP_PATH + '\\App\\tools\\7z\\32\\7z.exe';
 			RJX_addLog('Running on x86 mode');
 		}
+		var proceed = true;
 		RJX_logSeparator();
+		RJX_UPFILE = 'UPDATE.zip';
 		if (APP_FS.existsSync(APP_PATH + '\\Backup') !== true){
 			process.chdir(APP_PATH);
 			APP_FS.mkdirSync(APP_PATH + '\\Backup');
@@ -85,8 +87,27 @@ function RJX_Toolset_STARTUP(){
 		if (APP_FS.existsSync(APP_PATH + '\\Update\\Code') === true){
 			RJX_deleteFolderRecursive(APP_PATH + '\\Update\\Code');
 		}
-		RJX_checkVars();
+		if (APP_FS.existsSync(APP_PATH + '\\Update\\publish') === true){
+			proceed = false;
+			RJX_addLog('INFO - Removing leftover files from previous update... (publish)');
+			RJX_deleteFolderRecursive(APP_PATH + '\\Update\\publish');
+			RJX_TEMP_INTERVAL = setInterval(function(){
+				if (EXTERNAL_APP_RUNNING === false){
+					RJX_RELOAD();
+				} else {
+					console.info('Waiting Removing leftover files... (publish)');
+				}
+			}, 100);
+		}
+		if (APP_FS.existsSync(APP_PATH + '\\Update\\' + RJX_UPFILE) === true){
+			APP_FS.unlinkSync(APP_PATH + '\\Update\\' + RJX_UPFILE);
+		}
+		if (proceed === true){
+			RJX_checkVars();
+		}
 	} catch (err){
+		RJX_addLog('ERROR ON STARTUP!');
+		RJX_addLog('Reason: ' + err);
 		console.error('ERROR ON STARTUP!\nReason: ' + err);
 		window.alert('ERROR ON STARTUP!\nReason: ' + err);
 	}
@@ -96,6 +117,7 @@ function RJX_RELOAD(){
 }
 function RJX_checkVars(){
 	if (JSON.parse(localStorage.getItem('RJX_SETUP')) !== true){
+		RJX_addLog('CONFIGS - Saving first values...');
 		RJX_SAVE_CONFS();
 		RJX_RELOAD();
 	} else {
@@ -112,7 +134,6 @@ function RJX_checkVars(){
 		document.getElementById('SET_UPDATE_METHOD').value = RJX_BUILD_METHOD;
 		document.getElementById('CHECK_DECOMP_SHARE').checked = RJX_DECOMP_SHARE;
 		//
-		RJX_UPFILE = 'UPDATE.zip';
 		RJX_NAND_PATH = nw.App.dataPath.replace('Local\\RJX_Toolset\\User Data\\Default', 'Roaming\\Ryujinx\\');
 		if (APP_FS.existsSync(RJX_NAND_PATH) !== false){
 			document.getElementById('LBL_NAND_EXISTS').innerHTML = 'Yes';
@@ -223,9 +244,9 @@ function RJX_currentTime(){
 	return d + '-' + m + '-' + y + '_' + h + '.' + mi + '.' + s;
 }
 // RUN SOFTWARE
-function RJX_runExternalSoftware(exe, args){
+function RJX_runExternalSoftware(exe, args, showLog){
 	try{
-		//var tmpArgs = args;
+		var tmpArgs = args;
 		EXTERNAL_APP_EXITCODE = 0;
 		EXTERNAL_APP_RUNNING = true;
 		const { spawn } = require('child_process');
@@ -235,13 +256,17 @@ function RJX_runExternalSoftware(exe, args){
 		}
 		const ls = spawn(exe, args);
 		EXTERNAL_APP_PID = ls.pid;
-		//RJX_addLog('Running external command \\ software: ' + exe);
-		//RJX_addLog('Args: ' + tmpArgs);
+		if (showLog === true){
+			RJX_addLog('Running external command \\ software: ' + exe);
+			RJX_addLog('Args: ' + tmpArgs);
+		}
 		ls.stdout.on('data', (data) => {
-			RJX_addLog('External App: ' + data.replace(new RegExp('\n', 'g'), '<br>'));
+			console.info('External App: ' + data);
+			RJX_addLog('External App: ' + data.replace('\n', '<br>'));
 		});
 		ls.stderr.on('data', (data) => {
-			RJX_addLog('External App: ' + data.replace(new RegExp('\n', 'g'), '<br>'));
+			console.info('External App: ' + data);
+			RJX_addLog('External App: ' + data.replace('\n', '<br>'));
 		});
 		ls.on('close', (code) => {
 			EXTERNAL_APP_PID = 0;
@@ -278,7 +303,7 @@ function RJX_SAVE_CONFS(){
 function RJX_downloadFile(url, nomedoarquivo){
 	DOWNLOAD_PG = 0;
 	DOWNLOAD_COMPLETE = false;
-	RJX_addLog('DOWNLOAD - Starting download: ' + url);
+	RJX_addLog('DOWNLOAD - Starting download: <font class="user-can-select">' + url + '</font>');
 	console.info('DOWNLOAD - Download path: ' + nomedoarquivo);
 	const http = require('https');
 	const file = APP_FS.createWriteStream(nomedoarquivo);
@@ -300,7 +325,7 @@ function RJX_downloadFile(url, nomedoarquivo){
      		if (DOWNLOAD_STATUSCODE === 200){
 	  			DOWNLOAD_LENGTH = undefined;
 	  			DOWNLOAD_COMPLETE = true;
-     			RJX_addLog('DOWNLOAD - (' + url + ') Download complete!', true);
+     			RJX_addLog('DOWNLOAD - (<font class="user-can-select">' + url + '</font>) Download complete!');
      		} else {
      			DOWNLOAD_COMPLETE = false;
      		}

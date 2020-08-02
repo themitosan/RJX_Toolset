@@ -80,6 +80,11 @@ function RJX_UPDATE_PROGRESSBAR(percentage, mode){
 function RJX_DESIGN_UPDATEBUILDINFO(showLog){
 	document.title = RJX_logonText;
 	var winStats = BUILD_JSON.build.jobs[0].status;
+	if (winStats === 'running'){
+		$('#LBL_BUILD_STATUS').addClass('LBL_RUNNING');
+		$('#LBL_BUILD_STATUS').removeClass('LBL_FAIL');
+		$('#LBL_BUILD_STATUS').removeClass('LBL_SUCCESS');
+	}
 	if (winStats === 'success'){
 		$('#LBL_BUILD_STATUS').addClass('LBL_SUCCESS');
 		$('#LBL_BUILD_STATUS').removeClass('LBL_FAIL');
@@ -88,13 +93,14 @@ function RJX_DESIGN_UPDATEBUILDINFO(showLog){
 	} else {
 		$('#BTN_BIG_UPDATE').css({'display': 'none'});
 	}
-	if (winStats === 'running'){
-		$('#LBL_BUILD_STATUS').addClass('LBL_RUNNING');
-		$('#LBL_BUILD_STATUS').removeClass('LBL_FAIL');
-		$('#LBL_BUILD_STATUS').removeClass('LBL_SUCCESS');
+	if (BUILD_JSON.build.version !== RJX_LAST_UPDATE && RJX_NOTIFIED === false){
+		if (RJX_SHOW_NOTIFY === true){
+			RJX_showNotify('RJX_Toolset', 'There is a new update!\nBuild: ' + BUILD_JSON.build.version, 6000);
+			RJX_NOTIFIED = true;
+		}
 	}
 	if (showLog === true){
-		RJX_addLog('INFO - Current Build: ' + BUILD_JSON.build.version);
+		RJX_addLog('INFO - Current build: ' + BUILD_JSON.build.version);
 	}
 	if (RYU_TRUSTED_DEVS.indexOf(BUILD_JSON.build.authorName) !== -1){
 		document.getElementById('LBL_BUILD_AUT').innerHTML = BUILD_JSON.build.authorName + ' (Ryujinx Official Developer)';

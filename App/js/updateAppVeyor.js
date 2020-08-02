@@ -16,8 +16,8 @@ var RYU_TRUSTED_DEVS = [
 function RJX_getLastBuildInfo(showLog){
 	try{
 		if (showLog === true){
-			document.title = RJX_logonText + ' - Please Wait...';
 			RJX_UPDATE_PROGRESSBAR('50%', 0);
+			document.title = RJX_logonText + ' - Please Wait...';
 			RJX_addLog('INFO - Getting latest build info, please wait...');
 		} else {
 			document.title = RJX_logonText + ' - Updating build infos...';

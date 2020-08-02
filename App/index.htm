@@ -69,6 +69,11 @@
 						 - Decompress Share Folder (Set this option off to make extraction more faster!)
 					</div>
 					<div class="SEPARADOR"></div>
+					<input type="checkbox" id="CHECK_NOTIFY_DESK" onchange="RJX_SAVE_CONFS();">
+					<div class="LBL_CHECK_FIX" onclick="DESIGN_CHECKBOX('CHECK_NOTIFY_DESK');">
+						 - Show desktop notifications
+					</div>
+					<div class="SEPARADOR"></div>
 					Last Backup: <font id="LBL_LAST_BCK" class="adjustText">N/A</font>
 					<input type="button" class="BTN_SETTINGS" value="Backup Settings" onclick="RJX_backupSys();"><br>
 					<input type="button" class="BTN_SETTINGS" value="Restore Settings" onclick="RJX_restoreSys();">
@@ -96,9 +101,9 @@
 					Build Number: <font id="LBL_BUILD_NUMBER" class="adjustText_2">Undefined</font><br>
 					Build ID: <font id="LBL_BUILD_ID" class="adjustText_2">Undefined</font><br>
 					Build OS: <font id="LBL_BUILD_OS" class="adjustText_2">Undefined</font><br>
-					Build Status: <font id="LBL_BUILD_STATUS" class="adjustText_2">Undefined</font><br>
-					<center>
-						<br><input type="button" class="BTN_UPDATE none" id="BTN_BIG_UPDATE" value="Update Ryujinx" onclick="RJX_UPDATE();">
+					Build Status: <font id="LBL_BUILD_STATUS" class="adjustText_2">Undefined</font>
+					<center><br>
+						<input type="button" class="BTN_UPDATE none" id="BTN_BIG_UPDATE" value="Update Ryujinx" onclick="RJX_UPDATE();">
 					</center>
 				</div>
 			</div>

@@ -1,8 +1,9 @@
 /*
 	RJX_Toolset
 	boot.js
+
+	Vars
 */
-// Vars
 var APP_FS;
 var APP_PATH;
 var APP_LOG = '';
@@ -23,6 +24,9 @@ var DOWNLOAD_REQUEST;
 var DOWNLOAD_RESPONSE;
 var DOWNLOAD_COMPLETE;
 var DOWNLOAD_STATUSCODE;
+// Notify
+var RJX_NOTIFIED = false;
+var RJX_SHOW_NOTIFY = false;
 //
 var RJX_7Z_PATH;
 var RJX_APPV_XML;
@@ -122,20 +126,22 @@ function RJX_checkVars(){
 		RJX_DOTPATH = localStorage.getItem('RJX_DOTPATH');
 		RJX_LATEST_BCK = localStorage.getItem('RJX_BCK_FILE');
 		RJX_LAST_UPDATE = localStorage.getItem('RJX_LAST_UPDATE');
+		RJX_NOTIFIED = JSON.parse(localStorage.getItem('RJX_NOTIFIED'));
 		RJX_BUILD_METHOD = parseInt(localStorage.getItem('RJX_BUILD_METHOD'));
+		RJX_SHOW_NOTIFY = JSON.parse(localStorage.getItem('RJX_SHOW_NOTIFY'));
 		RJX_DECOMP_SHARE = JSON.parse(localStorage.getItem('RJX_DECOMP_SHARE'));
 		document.getElementById('LBL_APP_VER').innerHTML = APP_VERSION;
 		document.getElementById('LBL_RYU_PATH').innerHTML = RJX_EMUPATH;
 		document.getElementById('LBL_GH_BRANCH').innerHTML = RJX_BRANCH;
 		document.getElementById('LBL_DOTNET_PATH').innerHTML = RJX_DOTPATH;
 		document.getElementById('SET_UPDATE_METHOD').value = RJX_BUILD_METHOD;
+		document.getElementById('CHECK_NOTIFY_DESK').checked = RJX_DECOMP_SHARE;
 		document.getElementById('CHECK_DECOMP_SHARE').checked = RJX_DECOMP_SHARE;
-		//
 		RJX_NAND_PATH = nw.App.dataPath.replace('Local\\RJX_Toolset\\User Data\\Default', 'Roaming\\Ryujinx\\');
 		if (APP_FS.existsSync(RJX_NAND_PATH) !== false){
+			$('#BTN_EMU_BCK').css({'display': 'inline'});
 			document.getElementById('LBL_NAND_EXISTS').innerHTML = 'Yes';
 			document.getElementById('LBL_NAND_PATH').innerHTML = RJX_NAND_PATH;
-			$('#BTN_EMU_BCK').css({'display': 'inline'});
 		} else {
 			$('#BTN_EMU_BCK').css({'display': 'none'});
 			document.getElementById('LBL_NAND_EXISTS').innerHTML = 'No';
@@ -248,7 +254,31 @@ function RJX_currentTime(){
 	}
 	return d + '-' + m + '-' + y + '_' + h + '.' + mi + '.' + s;
 }
-// RUN SOFTWARE
+// Desk Notify
+function RJX_showNotify(title, text, timeDisplay){
+	if (title === ''){
+		title = 'RJX_Toolset - Notification';
+	}
+	if (text === ''){
+		text = 'Message';
+	}
+	if (timeDisplay === null || timeDisplay === undefined || timeDisplay === ''){
+		timeDisplay = 4000;
+	}
+	try{	
+		var iconPath = APP_PATH + '\\App\\img\\logo.png';
+		var NOTIFY = new Notification(title, {
+			icon: iconPath,
+			body: text,
+		});
+		setTimeout(NOTIFY.close.bind(NOTIFY), timeDisplay);
+	}
+	catch(err){
+		RJX_addLog('(Notification) ERROR: ' + err);
+		console.error('(Notification) ERROR - ' + err);
+	}
+}
+// Run Software
 function RJX_runExternalSoftware(exe, args, showLog){
 	try{
 		var tmpArgs = args;
@@ -262,16 +292,16 @@ function RJX_runExternalSoftware(exe, args, showLog){
 		const ls = spawn(exe, args);
 		EXTERNAL_APP_PID = ls.pid;
 		if (showLog === true){
-			RJX_addLog('Running external command \\ software: ' + exe);
+			RJX_addLog('External Software - File: ' + exe);
 			RJX_addLog('Args: ' + tmpArgs);
 		}
 		ls.stdout.on('data', (data) => {
-			console.info('External App: ' + data);
-			RJX_addLog('External App: ' + data.replace('\n', '<br>'));
+			console.info('External Software - ' + data);
+			RJX_addLog('External Software - ' + data.replace('\n', '<br>'));
 		});
 		ls.stderr.on('data', (data) => {
-			console.info('External App: ' + data);
-			RJX_addLog('External App: ' + data.replace('\n', '<br>'));
+			console.info('External Software - ' + data);
+			RJX_addLog('External Software - ' + data.replace('\n', '<br>'));
 		});
 		ls.on('close', (code) => {
 			EXTERNAL_APP_PID = 0;
@@ -294,6 +324,7 @@ function RJX_runExternalSoftware(exe, args, showLog){
 	Save Files
 */
 function RJX_SAVE_CONFS(){
+	RJX_SHOW_NOTIFY = JSON.parse(document.getElementById('CHECK_NOTIFY_DESK').checked);
 	RJX_DECOMP_SHARE = JSON.parse(document.getElementById('CHECK_DECOMP_SHARE').checked);
 	/*
 		End
@@ -303,6 +334,7 @@ function RJX_SAVE_CONFS(){
 	localStorage.setItem('RJX_BRANCH', RJX_BRANCH);
 	localStorage.setItem('RJX_DOTPATH', RJX_DOTPATH);
 	localStorage.setItem('RJX_LAST_UPDATE', RJX_LAST_UPDATE);
+	localStorage.setItem('RJX_SHOW_NOTIFY', RJX_SHOW_NOTIFY);
 	localStorage.setItem('RJX_BUILD_METHOD', RJX_BUILD_METHOD);
 	localStorage.setItem('RJX_DECOMP_SHARE', RJX_DECOMP_SHARE);
 	localStorage.setItem('RJX_SETUP', true);

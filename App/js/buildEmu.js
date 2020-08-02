@@ -147,6 +147,7 @@ function RJX_doneUpdate(){
 	clearInterval(RJX_TEMP_INTERVAL);
 	document.title = RJX_logonText;
 	process.chdir(APP_PATH);
+	RJX_NOTIFIED = false;
 	RJX_UPDATING = false;
 	RJX_SAVE_CONFS();
 	RJX_CLOSE_WAIT();

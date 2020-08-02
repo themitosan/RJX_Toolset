@@ -25,6 +25,7 @@ function RJX_updateFromCompiler(){
 }
 function RJX_downloadEmu(){
 	if (APP_FS.existsSync(RJX_DOTPATH) !== false){
+		RJX_UPDATING = true;
 		RJX_UPDATE_PROGRESSBAR('10%', 0);
 		RJX_addLog('Update - Downloading Raw code from GitHub');
 		RJX_addLog('GitHub Branch: ' + RJX_BRANCH);
@@ -143,6 +144,7 @@ function RJX_doneUpdate(){
 	document.title = RJX_logonText;
 	clearInterval(RJX_TEMP_INTERVAL);
 	process.chdir(APP_PATH);
+	RJX_UPDATING = false;
 	RJX_logSeparator();
 	RJX_UPDATE_PROGRESSBAR('Process Complete!', 1);
 	RJX_addLog('Update - Process Complete!');

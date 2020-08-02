@@ -71,7 +71,7 @@ function RJX_UPDATE_PROGRESSBAR(percentage, mode){
 		document.getElementById('LBL_PROGRESSBAR_PERCENTAGE').innerHTML = '100%';
 	}
 }
-function RJX_DESIGN_UPDATEBUILDINFO(){
+function RJX_DESIGN_UPDATEBUILDINFO(showLog){
 	document.title = RJX_logonText;
 	var winStats = BUILD_JSON.build.jobs[0].status;
 	if (winStats === 'success'){
@@ -87,7 +87,9 @@ function RJX_DESIGN_UPDATEBUILDINFO(){
 		$('#LBL_BUILD_STATUS').removeClass('LBL_FAIL');
 		$('#LBL_BUILD_STATUS').removeClass('LBL_SUCCESS');
 	}
-	RJX_addLog('INFO - Current Build: ' + BUILD_JSON.build.version);
+	if (showLog === true){
+		RJX_addLog('INFO - Current Build: ' + BUILD_JSON.build.version);
+	}
 	if (RYU_TRUSTED_DEVS.indexOf(BUILD_JSON.build.authorName) !== -1){
 		document.getElementById('LBL_BUILD_AUT').innerHTML = BUILD_JSON.build.authorName + ' (Ryujinx Official Developer)';
 	} else {

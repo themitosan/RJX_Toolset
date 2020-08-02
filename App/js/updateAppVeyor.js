@@ -13,17 +13,23 @@ var RYU_TRUSTED_DEVS = [
 /*
 	Functions
 */
-function RJX_getLastBuildInfo(){
+function RJX_getLastBuildInfo(showLog){
 	try{
-		RJX_UPDATE_PROGRESSBAR('50%', 0);
-		document.title = RJX_logonText + ' - Please Wait...';
-		RJX_addLog('INFO - Getting latest build info, please wait...');
+		if (showLog === true){
+			document.title = RJX_logonText + ' - Please Wait...';
+			RJX_UPDATE_PROGRESSBAR('50%', 0);
+			RJX_addLog('INFO - Getting latest build info, please wait...');
+		} else {
+			document.title = RJX_logonText + ' - Updating build infos...';
+		}
 		fetch(RJX_APPV_XML).then(resp => resp.json()).then(dat => BUILD_JSON = dat);
 		RJX_FETCH_TICK = setInterval(function(){
 			if (BUILD_JSON !== undefined){
-				RJX_addLog('INFO - Getting latest build info: done!');
+				if (showLog === true){
+					RJX_addLog('INFO - Getting latest build info: done!');
+				}
 				RJX_UPDATE_PROGRESSBAR('Process Complete!', 1);
-				RJX_DESIGN_UPDATEBUILDINFO();
+				RJX_DESIGN_UPDATEBUILDINFO(showLog);
 				clearInterval(RJX_FETCH_TICK);
 			}
 		}, 500);
@@ -62,6 +68,7 @@ function RJX_updateFromAppVeyor(){
 	}
 }
 function RJX_APPV_getFirstDown(){
+	RJX_UPDATING = true;
 	document.title = RJX_logonText + ' - Updating...';
 	RJX_UPDATE_PROGRESSBAR('20%', 0);
 	RJX_CALL_WAIT('Getting download link');

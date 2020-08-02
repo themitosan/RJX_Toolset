@@ -7,7 +7,7 @@ var APP_FS;
 var APP_PATH;
 var APP_LOG = '';
 var APP_CONGRATZ = 0;
-var APP_VERSION = '1.1.1';
+var APP_VERSION = '1.1.2';
 var MAIN_exludeFileFormats = [
 	'.xci',
 	'.nsp',
@@ -33,19 +33,14 @@ var RJX_NAND_PATH = '';
 var RJX_EMUPATH = 'N/A';
 var RJX_DOTPATH = 'N/A';
 var RJX_BUILD_METHOD = 0;
+var RJX_UPDATING = false;
 var EXTERNAL_APP_RUNNING;
 var EXTERNAL_APP_EXITCODE;
+var RJX_INTERNAL_INTERVAL;
 var RJX_BRANCH = 'master';
 var RJX_DECOMP_SHARE = false;
 var RJX_CURRENT_DOTVER = '3.1';
 var RJX_logonText = 'RJX_Toolset - Ver. ' + APP_VERSION;
-// Last Build Vars
-var CBUILD_OS = '';
-var CBUILD_desc = '';
-var CBUILD_status = '';
-var CBUILD_author = '';
-var CBUILD_buildId = '';
-var CBUILD_buildNum = '';
 /*
 	Functions
 */
@@ -163,9 +158,17 @@ function RJX_checkVars(){
 				RJX_RELOAD();
 			}, 5000);
 		} else {
-			RJX_getLastBuildInfo();
+			RJX_getLastBuildInfo(true);
+			RJX_UPDATE_INFOS();
 		}
 	}
+}
+function RJX_UPDATE_INFOS(){
+	RJX_INTERNAL_INTERVAL = setInterval(function(){
+		if (RJX_UPDATING !== true){
+			RJX_getLastBuildInfo(false);
+		}
+	}, 30000);
 }
 function RJX_CHANGE_BRANCH(){
 	var ask = prompt('Please insert new branch name below:\n(Previous: ' + RJX_BRANCH + ')', RJX_BRANCH);
@@ -288,7 +291,9 @@ function RJX_runExternalSoftware(exe, args, showLog){
 */
 function RJX_SAVE_CONFS(){
 	RJX_DECOMP_SHARE = JSON.parse(document.getElementById('CHECK_DECOMP_SHARE').checked);
-	//
+	/*
+		End
+	*/
 	localStorage.setItem('RJX_BCK_FILE', '');
 	localStorage.setItem('RJX_BRANCH', 'master');
 	localStorage.setItem('RJX_PATH', RJX_EMUPATH);

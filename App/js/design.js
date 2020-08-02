@@ -47,11 +47,11 @@ function RJX_MENU(menu){
 		} else {
 			$('#LOGO_FUNDO').fadeIn({duration: 200, queue: false});
 		}
-		$('#DIV_ID_' + DESIGN_LASTMENU).slideUp({duration: 500, queue: false});
+		$('#DIV_ID_' + DESIGN_LASTMENU).slideUp({duration: 300, queue: false});
 		DESIGN_LASTMENU = menu;
 		DESIGN_MENU_HISTORY.push(menu);
-		$('#DIV_ID_' + DESIGN_LASTMENU).slideDown({duration: 500, queue: false});
-		$('#DIV_INFOS').fadeIn({duration: 510, queue: false});
+		$('#DIV_ID_' + DESIGN_LASTMENU).slideDown({duration: 300, queue: false});
+		$('#DIV_INFOS').fadeIn({duration: 310, queue: false});
 	}
 }
 function RJX_UPDATE_PROGRESSBAR(percentage, mode){
@@ -88,11 +88,15 @@ function RJX_DESIGN_UPDATEBUILDINFO(){
 		$('#LBL_BUILD_STATUS').removeClass('LBL_SUCCESS');
 	}
 	RJX_addLog('INFO - Current Build: ' + BUILD_JSON.build.version);
+	if (RYU_TRUSTED_DEVS.indexOf(BUILD_JSON.build.authorName) !== -1){
+		document.getElementById('LBL_BUILD_AUT').innerHTML = BUILD_JSON.build.authorName + ' (Ryujinx Official Developer)';
+	} else {
+		document.getElementById('LBL_BUILD_AUT').innerHTML = BUILD_JSON.build.authorName;
+	}
 	winStats = winStats.slice(0, 1).toUpperCase() + winStats.slice(1, winStats.length);
 	document.getElementById('LBL_BUILD_NUMBER').innerHTML = BUILD_JSON.build.buildNumber;
 	document.getElementById('LBL_BUILD_OS').innerHTML = BUILD_JSON.build.jobs[0].osType;
 	document.getElementById('LBL_BUILD_COMPNUM').innerHTML = BUILD_JSON.build.version;
-	document.getElementById('LBL_BUILD_AUT').innerHTML = BUILD_JSON.build.authorName;
 	document.getElementById('LBL_BUILD_DESC').innerHTML = BUILD_JSON.build.message;
 	document.getElementById('LBL_BUILD_ID').innerHTML = BUILD_JSON.build.buildId;
 	document.getElementById('LBL_BUILD_STATUS').innerHTML = winStats;

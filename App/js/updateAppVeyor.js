@@ -7,6 +7,12 @@ var RJX_UPFILE;
 var RJX_FETCH_TICK;
 var RJX_GOODLINK = '';
 var RJX_APPV_DOWN_URL = '';
+var RYU_TRUSTED_DEVS = [
+	'Ac_K', 'gdkchan'
+];
+/*
+	Functions
+*/
 function RJX_getLastBuildInfo(){
 	try{
 		RJX_UPDATE_PROGRESSBAR('50%', 0);

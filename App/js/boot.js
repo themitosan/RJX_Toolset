@@ -8,7 +8,7 @@ var APP_FS;
 var APP_PATH;
 var APP_LOG = '';
 var APP_CONGRATZ = 0;
-var APP_VERSION = '1.1.2';
+var APP_VERSION = '1.1.3';
 var MAIN_exludeFileFormats = [
 	'.xci',
 	'.nsp',

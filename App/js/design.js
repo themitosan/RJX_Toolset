@@ -33,6 +33,7 @@ function RJX_logSeparator(){
 */
 function RJX_MENU(menu){
 	if (menu !== DESIGN_LASTMENU){
+		console.info('Call menu: ' + menu);
 		// About thing
 		if (menu === 0){
 			if (APP_CONGRATZ === 0){
@@ -46,6 +47,11 @@ function RJX_MENU(menu){
 			}
 		} else {
 			$('#LOGO_FUNDO').fadeIn({duration: 200, queue: false});
+		}
+		if (menu !== 2){
+			RJX_UPDATING = true;
+		} else {
+			RJX_UPDATING = false;
 		}
 		$('#DIV_ID_' + DESIGN_LASTMENU).slideUp({duration: 300, queue: false});
 		DESIGN_LASTMENU = menu;
@@ -101,6 +107,7 @@ function RJX_DESIGN_UPDATEBUILDINFO(showLog){
 	document.getElementById('LBL_BUILD_COMPNUM').innerHTML = BUILD_JSON.build.version;
 	document.getElementById('LBL_BUILD_DESC').innerHTML = BUILD_JSON.build.message;
 	document.getElementById('LBL_BUILD_ID').innerHTML = BUILD_JSON.build.buildId;
+	document.getElementById('LBL_BUILD_LOCVER').innerHTML = RJX_LAST_UPDATE;
 	document.getElementById('LBL_BUILD_STATUS').innerHTML = winStats;
 	document.getElementById('LBL_BUILD_BRX').innerHTML = RJX_BRANCH;
 	$('#DIV_TOP_MENU').fadeIn({duration: 500, queue: false});

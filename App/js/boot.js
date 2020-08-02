@@ -38,6 +38,7 @@ var EXTERNAL_APP_RUNNING;
 var EXTERNAL_APP_EXITCODE;
 var RJX_INTERNAL_INTERVAL;
 var RJX_BRANCH = 'master';
+var RJX_LAST_UPDATE = 'N/A';
 var RJX_DECOMP_SHARE = false;
 var RJX_CURRENT_DOTVER = '3.1';
 var RJX_logonText = 'RJX_Toolset - Ver. ' + APP_VERSION;
@@ -120,6 +121,7 @@ function RJX_checkVars(){
 		RJX_BRANCH = localStorage.getItem('RJX_BRANCH');
 		RJX_DOTPATH = localStorage.getItem('RJX_DOTPATH');
 		RJX_LATEST_BCK = localStorage.getItem('RJX_BCK_FILE');
+		RJX_LAST_UPDATE = localStorage.getItem('RJX_LAST_UPDATE');
 		RJX_BUILD_METHOD = parseInt(localStorage.getItem('RJX_BUILD_METHOD'));
 		RJX_DECOMP_SHARE = JSON.parse(localStorage.getItem('RJX_DECOMP_SHARE'));
 		document.getElementById('LBL_APP_VER').innerHTML = APP_VERSION;
@@ -276,7 +278,9 @@ function RJX_runExternalSoftware(exe, args, showLog){
 			EXTERNAL_APP_RUNNING = false;
 			EXTERNAL_APP_EXITCODE = code;
 			if (exe !== 'cmd'){
-				RJX_addLog('External App - The application was finished with exit code ' + code + '.');
+				if (showLog === true){
+					RJX_addLog('External App - The application was finished with exit code ' + code + '.');
+				}
 				console.info('External App - The application was finished with exit code ' + code + '.');
 				return code;
 			}
@@ -295,9 +299,10 @@ function RJX_SAVE_CONFS(){
 		End
 	*/
 	localStorage.setItem('RJX_BCK_FILE', '');
-	localStorage.setItem('RJX_BRANCH', 'master');
 	localStorage.setItem('RJX_PATH', RJX_EMUPATH);
+	localStorage.setItem('RJX_BRANCH', RJX_BRANCH);
 	localStorage.setItem('RJX_DOTPATH', RJX_DOTPATH);
+	localStorage.setItem('RJX_LAST_UPDATE', RJX_LAST_UPDATE);
 	localStorage.setItem('RJX_BUILD_METHOD', RJX_BUILD_METHOD);
 	localStorage.setItem('RJX_DECOMP_SHARE', RJX_DECOMP_SHARE);
 	localStorage.setItem('RJX_SETUP', true);
@@ -305,13 +310,15 @@ function RJX_SAVE_CONFS(){
 /*
 	Download Files
 */
-function RJX_downloadFile(url, nomedoarquivo){
+function RJX_downloadFile(url, nomedoarquivo, showLog){
 	DOWNLOAD_PG = 0;
 	DOWNLOAD_COMPLETE = false;
-	RJX_addLog('DOWNLOAD - Starting download: <font class="user-can-select">' + url + '</font>');
-	console.info('DOWNLOAD - Download path: ' + nomedoarquivo);
 	const http = require('https');
 	const file = APP_FS.createWriteStream(nomedoarquivo);
+	if (showLog !== false){
+		RJX_addLog('DOWNLOAD - Starting download: <font class="user-can-select">' + url + '</font>');
+	}
+	console.info('DOWNLOAD - Download path: ' + nomedoarquivo);
 	const request = http.get(url, function(response){
 		response.pipe(file);
 		DOWNLOAD_RUNNING = true;

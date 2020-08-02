@@ -75,9 +75,8 @@ function RJX_APPV_getFirstDown(){
 	var jobVer = BUILD_JSON.build.version;
 	var jobId = BUILD_JSON.build.jobs[0].jobId;
 	RJX_UPDATE_WAIT('Getting the first link to download the latest version');
-	//
 	RJX_APPV_DOWN_URL = 'https://ci.appveyor.com/api/buildjobs/' + jobId + '/artifacts/ryujinx-' + jobVer + '-win_x64.zip';
-	RJX_downloadFile(RJX_APPV_DOWN_URL, APP_PATH + '\\Update\\' + RJX_UPFILE);
+	RJX_downloadFile(RJX_APPV_DOWN_URL, APP_PATH + '\\Update\\' + RJX_UPFILE, true);
 	RJX_TEMP_INTERVAL = setInterval(function(){
 		if (DOWNLOAD_STATUSCODE === 302){
 			// By some reason, it fails with Ryujinx download link :v
@@ -108,6 +107,7 @@ function RJX_APPV_decompressEmu(){
 	clearInterval(RJX_TEMP_INTERVAL);
 	RJX_UPDATE_PROGRESSBAR('60%', 0);
 	$('#DIV_WAIT_MID').css({'margin-top': '122px'});
+	RJX_logSeparator();
 	// Decompress Share Folder
 	if (RJX_DECOMP_SHARE === true){
 		RJX_addLog('Extracting emulator files (with share folder)');
@@ -149,6 +149,8 @@ function RJX_APPV_removeLeftOver(){
 	RJX_deleteFolderRecursive(APP_PATH + '\\Update\\publish');
 	RJX_TEMP_INTERVAL = setInterval(function(){
 		if (EXTERNAL_APP_RUNNING === false){
+			RJX_LAST_UPDATE = BUILD_JSON.build.version;
+			document.getElementById('LBL_BUILD_LOCVER').innerHTML = RJX_LAST_UPDATE;
 			RJX_doneUpdate();
 		} else {
 			console.log('Waiting cleaning files...');

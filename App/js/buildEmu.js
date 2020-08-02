@@ -138,16 +138,17 @@ function RJX_finishUpdate(){
 	}, 1100);
 }
 function RJX_doneUpdate(){
+	RJX_logSeparator();
 	if (APP_FS.existsSync(APP_PATH + '\\Update\\' + RJX_UPFILE) === true){
 		APP_FS.unlinkSync(APP_PATH + '\\Update\\' + RJX_UPFILE);
 	}
-	document.title = RJX_logonText;
-	clearInterval(RJX_TEMP_INTERVAL);
-	process.chdir(APP_PATH);
-	RJX_UPDATING = false;
-	RJX_logSeparator();
 	RJX_UPDATE_PROGRESSBAR('Process Complete!', 1);
 	RJX_addLog('Update - Process Complete!');
+	clearInterval(RJX_TEMP_INTERVAL);
+	document.title = RJX_logonText;
+	process.chdir(APP_PATH);
+	RJX_UPDATING = false;
+	RJX_SAVE_CONFS();
 	RJX_CLOSE_WAIT();
 	RJX_MENU(2);
 }

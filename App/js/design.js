@@ -62,6 +62,9 @@ function RJX_MENU(menu){
 }
 function RJX_UPDATE_PROGRESSBAR(percentage, mode){
 	if (mode === 0){
+		if (percentage > 100){
+			percentage = 100;
+		}
 		$('#PB_PERCENTAGE').addClass('PERCENTAGE');
 		$('#Tab_PROGRESSBAR').css({'width': '102px'});
 		$('#PB_PERCENTAGE').removeClass('PERCENTAGE_OK');

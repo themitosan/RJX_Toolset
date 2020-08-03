@@ -144,8 +144,8 @@ function RJX_APPV_moveEmu(){
 function RJX_APPV_removeLeftOver(){
 	clearInterval(RJX_TEMP_INTERVAL);
 	RJX_UPDATE_PROGRESSBAR('90%', 0);
-	RJX_UPDATE_WAIT('Removing leftover files');
 	RJX_addLog('Removing leftover files');
+	RJX_UPDATE_WAIT('Removing leftover files...');
 	APP_FS.unlinkSync(APP_PATH + '\\Update\\' + RJX_UPFILE);
 	RJX_deleteFolderRecursive(APP_PATH + '\\Update\\publish');
 	RJX_TEMP_INTERVAL = setInterval(function(){

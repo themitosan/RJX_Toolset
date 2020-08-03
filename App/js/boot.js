@@ -8,7 +8,7 @@ var APP_FS;
 var APP_PATH;
 var APP_LOG = '';
 var APP_CONGRATZ = 0;
-var APP_VERSION = '1.1.4';
+var APP_VERSION = '1.1.5';
 var MAIN_exludeFileFormats = [
 	'.xci',
 	'.nsp',
@@ -136,7 +136,7 @@ function RJX_checkVars(){
 		document.getElementById('LBL_GH_BRANCH').innerHTML = RJX_BRANCH;
 		document.getElementById('LBL_DOTNET_PATH').innerHTML = RJX_DOTPATH;
 		document.getElementById('SET_UPDATE_METHOD').value = RJX_BUILD_METHOD;
-		document.getElementById('CHECK_NOTIFY_DESK').checked = RJX_DECOMP_SHARE;
+		document.getElementById('CHECK_NOTIFY_DESK').checked = RJX_SHOW_NOTIFY;
 		document.getElementById('CHECK_DECOMP_SHARE').checked = RJX_DECOMP_SHARE;
 		RJX_NAND_PATH = nw.App.dataPath.replace('Local\\RJX_Toolset\\User Data\\Default', 'Roaming\\Ryujinx\\');
 		if (APP_FS.existsSync(RJX_NAND_PATH) !== false){

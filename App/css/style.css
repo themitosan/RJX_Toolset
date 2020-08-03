@@ -152,7 +152,7 @@ img{
 	color: #fff;
 	width: 790px;
 	height: 330px;
-	overflow: auto;
+	overflow: hidden;
 	position: absolute;
 	border-radius: 6px;
 	background-color: #0009;

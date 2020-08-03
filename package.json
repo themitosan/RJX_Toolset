@@ -3,13 +3,13 @@
   "name": "RJX_Toolset",
   "description": "A tool to manage Ryujinx emulator files",
   "js-flags": "--disable-devtools --disable-web-security --allow-file-access-from-files --allow-file-access",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "keywords": [
     "Software",
     "node-webkit"
   ],
   "window": {
-    "title": "Loading...",
+    "title": "RJX_Toolset - Loading App...",
     "icon": "App/img/logo.png",
     "position": "center",
     "fullscreen": false,

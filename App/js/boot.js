@@ -8,7 +8,7 @@ var APP_FS;
 var APP_PATH;
 var APP_LOG = '';
 var APP_CONGRATZ = 0;
-var APP_VERSION = '1.1.5';
+var APP_VERSION = '1.1.6';
 var MAIN_exludeFileFormats = [
 	'.xci',
 	'.nsp',
@@ -371,7 +371,9 @@ function RJX_downloadFile(url, nomedoarquivo, showLog){
      		if (DOWNLOAD_STATUSCODE === 200){
 	  			DOWNLOAD_LENGTH = undefined;
 	  			DOWNLOAD_COMPLETE = true;
-     			RJX_addLog('DOWNLOAD - (<font class="user-can-select">' + url + '</font>) Download complete!');
+	  			if (showLog !== false){
+	     			RJX_addLog('DOWNLOAD - (<font class="user-can-select">' + url + '</font>) Download complete!');
+	     		}
      		} else {
      			DOWNLOAD_COMPLETE = false;
      		}

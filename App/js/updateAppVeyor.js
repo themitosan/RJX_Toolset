@@ -71,12 +71,13 @@ function RJX_APPV_getFirstDown(){
 	RJX_UPDATING = true;
 	document.title = RJX_logonText + ' - Updating...';
 	RJX_UPDATE_PROGRESSBAR('20%', 0);
-	RJX_CALL_WAIT('Getting download link');
 	var jobVer = BUILD_JSON.build.version;
+	RJX_CALL_WAIT('Getting download link');
 	var jobId = BUILD_JSON.build.jobs[0].jobId;
+	RJX_addLog('INFO - Generating download link...');
 	RJX_UPDATE_WAIT('Getting the first link to download the latest version');
 	RJX_APPV_DOWN_URL = 'https://ci.appveyor.com/api/buildjobs/' + jobId + '/artifacts/ryujinx-' + jobVer + '-win_x64.zip';
-	RJX_downloadFile(RJX_APPV_DOWN_URL, APP_PATH + '\\Update\\' + RJX_UPFILE, true);
+	RJX_downloadFile(RJX_APPV_DOWN_URL, APP_PATH + '\\Update\\' + RJX_UPFILE, false);
 	RJX_TEMP_INTERVAL = setInterval(function(){
 		if (DOWNLOAD_STATUSCODE === 302){
 			// By some reason, it fails with Ryujinx download link :v

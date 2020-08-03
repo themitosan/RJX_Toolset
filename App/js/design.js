@@ -33,7 +33,7 @@ function RJX_logSeparator(){
 */
 function RJX_MENU(menu){
 	if (menu !== DESIGN_LASTMENU){
-		console.info('Call menu: ' + menu);
+		// console.info('Call menu: ' + menu);
 		// About thing
 		if (menu === 0){
 			if (APP_CONGRATZ === 0){
@@ -93,10 +93,11 @@ function RJX_DESIGN_UPDATEBUILDINFO(showLog){
 	} else {
 		$('#BTN_BIG_UPDATE').css({'display': 'none'});
 	}
-	if (BUILD_JSON.build.version !== RJX_LAST_UPDATE && RJX_NOTIFIED === false){
+	if (RJX_LAST_UPDATE !== 'N/A' && BUILD_JSON.build.version !== RJX_LAST_UPDATE && RJX_NOTIFIED === false){
 		if (RJX_SHOW_NOTIFY === true){
-			RJX_showNotify('RJX_Toolset', 'There is a new update!\nBuild: ' + BUILD_JSON.build.version, 6000);
+			RJX_showNotify('RJX_Toolset', 'There is a new update!\nNew Build: ' + BUILD_JSON.build.version + '\n' + BUILD_JSON.build.message, 10000);
 			RJX_NOTIFIED = true;
+			RJX_SAVE_CONFS();
 		}
 	}
 	if (showLog === true){

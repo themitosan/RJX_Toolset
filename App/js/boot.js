@@ -8,7 +8,7 @@ var APP_FS;
 var APP_PATH;
 var APP_LOG = '';
 var APP_CONGRATZ = 0;
-var APP_VERSION = '1.1.3';
+var APP_VERSION = '1.1.4';
 var MAIN_exludeFileFormats = [
 	'.xci',
 	'.nsp',
@@ -118,6 +118,7 @@ function RJX_RELOAD(){
 function RJX_checkVars(){
 	if (JSON.parse(localStorage.getItem('RJX_SETUP')) !== true){
 		RJX_addLog('CONFIGS - Saving first values...');
+		RJX_NOTIFIED = false;
 		RJX_SAVE_CONFS();
 		RJX_RELOAD();
 	} else {
@@ -333,6 +334,7 @@ function RJX_SAVE_CONFS(){
 	localStorage.setItem('RJX_PATH', RJX_EMUPATH);
 	localStorage.setItem('RJX_BRANCH', RJX_BRANCH);
 	localStorage.setItem('RJX_DOTPATH', RJX_DOTPATH);
+	localStorage.setItem('RJX_NOTIFIED', RJX_NOTIFIED);
 	localStorage.setItem('RJX_LAST_UPDATE', RJX_LAST_UPDATE);
 	localStorage.setItem('RJX_SHOW_NOTIFY', RJX_SHOW_NOTIFY);
 	localStorage.setItem('RJX_BUILD_METHOD', RJX_BUILD_METHOD);

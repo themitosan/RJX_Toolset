@@ -142,7 +142,7 @@ img{
     height: 28px;
     border-radius: 6px;
 	position: absolute;
-    width: calc(100% - 14px);
+    width: calc(100% - 12px);
     background-image: linear-gradient(to bottom, #000d03, #103120);
 }
 .DIV_INFOS{

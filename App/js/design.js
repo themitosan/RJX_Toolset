@@ -69,13 +69,13 @@ function RJX_UPDATE_PROGRESSBAR(percentage, mode){
 		$('#Tab_PROGRESSBAR').css({'width': '102px'});
 		$('#PB_PERCENTAGE').removeClass('PERCENTAGE_OK');
 		document.getElementById('PB_PERCENTAGE').innerHTML = percentage;
-		$('#PB_PERCENTAGE').css({'width': 'calc(' + percentage + ' - 14px)'});
+		$('#PB_PERCENTAGE').css({'width': 'calc(' + percentage + ' - 12px)'});
 		document.getElementById('LBL_PROGRESSBAR_PERCENTAGE').innerHTML = percentage;
 	} else {
 		$('#PB_PERCENTAGE').addClass('PERCENTAGE_OK');
 		$('#PB_PERCENTAGE').removeClass('PERCENTAGE');
 		$('#Tab_PROGRESSBAR').css({'width': '111px'});
-		$('#PB_PERCENTAGE').css({'width': 'calc(100% - 14px)'});
+		$('#PB_PERCENTAGE').css({'width': 'calc(100% - 12px)'});
 		document.getElementById('PB_PERCENTAGE').innerHTML = 'Process Complete!';
 		document.getElementById('LBL_PROGRESSBAR_PERCENTAGE').innerHTML = '100%';
 	}
@@ -169,12 +169,18 @@ function DESIGN_calcPercentage(current, maximum){
 		return 0;
 	}
 }
-function RJX_UPDATE_DOWNLOAD_PROGRESSBAR(eName, eLabel, offset){
+function RJX_UPDATE_DOWNLOAD_PROGRESSBAR(eName, eLabel, offsetPx, currentPercent, maxPercent){
+	var cPerc;
 	clearInterval(DESIGN_PROG_BAR_INTERVAL);
+	var valDif = RJX_parsePositive((currentPercent - maxPercent));
+	var addVal = parseInt(valDif) / 100;
 	DESIGN_PROG_BAR_INTERVAL = setInterval(function(){
 		if (DOWNLOAD_COMPLETE !== true){
 			var perc = DESIGN_calcPercentage(DOWNLOAD_PG, DOWNLOAD_LENGTH);
-			$('#' + eName).css({'width': 'calc(' + perc + '% - ' + offset + 'px)'});
+			cPerc = (addVal * perc).toFixed(3);
+			var toProgress = (parseInt(cPerc) + currentPercent) + '%';
+			$('#' + eName).css({'width': 'calc(' + perc + '% - ' + offsetPx + 'px)'});
+			RJX_UPDATE_PROGRESSBAR(toProgress, 0);
 			if (eName !== undefined){
 				var parse = parseInt(perc);
 				if (parse !== NaN && parse !== 'NaN'){

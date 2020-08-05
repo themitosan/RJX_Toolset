@@ -94,12 +94,12 @@ function RJX_APPV_downloadAppVeyor(){
 	$('#DIV_WAIT_MID').css({'margin-top': '100px'});
 	setTimeout(function(){
 		RJX_downloadFile(RJX_GOODLINK, APP_PATH + '\\Update\\' + RJX_UPFILE);
-		RJX_UPDATE_DOWNLOAD_PROGRESSBAR('PROGRESSBAR_0', 'LBL_DOWN_PERCENT', 20);
+		RJX_UPDATE_DOWNLOAD_PROGRESSBAR('PROGRESSBAR_0', 'LBL_DOWN_PERCENT', 20, 40, 60);
 		RJX_TEMP_INTERVAL = setInterval(function(){
 			if (DOWNLOAD_COMPLETE === true){
 				RJX_APPV_decompressEmu();
 			} else {
-				console.log('APPV - Waiting downloading file...');
+				//console.log('APPV - Waiting downloading file...');
 			}
 		}, 100);
 	}, 1000);

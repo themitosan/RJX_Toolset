@@ -8,7 +8,7 @@ var APP_FS;
 var APP_PATH;
 var APP_LOG = '';
 var APP_CONGRATZ = 0;
-var APP_VERSION = '1.1.7';
+var APP_VERSION = '1.1.8';
 var MAIN_exludeFileFormats = [
 	'.xci',
 	'.nsp',
@@ -49,7 +49,7 @@ var RJX_logonText = 'RJX_Toolset - Ver. ' + APP_VERSION;
 /*
 	Functions
 */
-function getFileName(file){
+function RJX_getFileName(file){
 	if (file !== '' && file !== undefined){
 		var c = 0;
 		var removePath = file.toLowerCase().split(/(\\|\/)/g).pop();
@@ -227,6 +227,19 @@ function RJX_UPDATE(){
 		RJX_updateFromCompiler();
 	}
 }
+/*
+	Parse Section
+*/
+function RJX_parsePositive(num){
+	if (parseInt(num) !== NaN && num !== undefined){
+		return (num - num - num);
+	} else {
+		return 0;
+	}
+}
+/*
+	Other Things
+*/
 function RJX_WIP(){
 	window.alert('WARN - THIS IS WIP!');
 }
@@ -317,7 +330,7 @@ function RJX_runExternalSoftware(exe, args, showLog){
 			}
 		});
 	} catch (err){
-		RJX_addLog('ERROR - Something went wrong while running ' + getFileName(exe) + '!');
+		RJX_addLog('ERROR - Something went wrong while running ' + RJX_getFileName(exe) + '!');
 		RJX_addLog('Details: ' + err);
 	}
 }
@@ -350,9 +363,9 @@ function RJX_downloadFile(url, nomedoarquivo, showLog){
 	const http = require('https');
 	const file = APP_FS.createWriteStream(nomedoarquivo);
 	if (showLog !== false){
-		RJX_addLog('DOWNLOAD - Starting download: <font class="user-can-select">' + url + '</font>');
+		RJX_addLog('DOWN - Starting download: <font class="user-can-select">' + url + '</font>');
 	}
-	console.info('DOWNLOAD - Download path: ' + nomedoarquivo);
+	console.info('DOWN - Download path: ' + nomedoarquivo);
 	const request = http.get(url, function(response){
 		response.pipe(file);
 		DOWNLOAD_RUNNING = true;
@@ -372,7 +385,7 @@ function RJX_downloadFile(url, nomedoarquivo, showLog){
 	  			DOWNLOAD_LENGTH = undefined;
 	  			DOWNLOAD_COMPLETE = true;
 	  			if (showLog !== false){
-	     			RJX_addLog('DOWNLOAD - (<font class="user-can-select">' + url + '</font>) Download complete!');
+	     			RJX_addLog('DOWN - (<font class="user-can-select">' + url + '</font>) Download complete!');
 	     		}
      		} else {
      			DOWNLOAD_COMPLETE = false;

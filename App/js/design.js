@@ -88,6 +88,11 @@ function RJX_DESIGN_UPDATEBUILDINFO(showLog){
 		$('#LBL_BUILD_STATUS').removeClass('LBL_FAIL');
 		$('#LBL_BUILD_STATUS').removeClass('LBL_SUCCESS');
 	}
+	if (winStats === 'starting'){
+		$('#LBL_BUILD_STATUS').addClass('LBL_RUNNING');
+		$('#LBL_BUILD_STATUS').removeClass('LBL_FAIL');
+		$('#LBL_BUILD_STATUS').removeClass('LBL_SUCCESS');
+	}
 	if (winStats === 'success'){
 		$('#LBL_BUILD_STATUS').addClass('LBL_SUCCESS');
 		$('#LBL_BUILD_STATUS').removeClass('LBL_FAIL');

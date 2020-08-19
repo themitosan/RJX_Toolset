@@ -196,8 +196,9 @@ img{
 .SELECT_SETTINGS{
 	z-index: 2;
     color: #000;
-	height: 22px;
     width: 663px;
+	height: 22px;
+    outline: none;
     cursor: pointer;
     margin-top: 2px;
     margin-bottom: 2px;
@@ -217,6 +218,7 @@ img{
 	color: #fff;
 	height: 40px;
 	border: none;
+	outline: none;
 	cursor: pointer;
 	text-shadow: 0 0 10px #222;
 	background-image: linear-gradient(to bottom, #b5b5b5, #7f7f7f);
@@ -232,6 +234,7 @@ img{
 	width: 110px;
 	height: 26px;
 	border: none;
+	outline: none;
 	cursor: pointer;
 	margin-top: 4px;
 	border-radius: 4px;
@@ -252,6 +255,7 @@ img{
 	width: 400px;
     height: 40px;
     border: none;
+    outline: none;
 	cursor: pointer;
     border-radius: 4px;
 	box-shadow: 0 0 20px #0089df;
@@ -268,6 +272,7 @@ img{
 	z-index: 2;
     left: 628px;
     border: none;
+    outline: none;
 	cursor: pointer;
     min-width: 152px;
     border-radius: 2px;

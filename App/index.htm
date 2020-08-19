@@ -12,11 +12,6 @@
 		<script type="text/javascript" src="js/buildEmu.js"></script>
 		<script type="text/javascript" src="js/updateAppVeyor.js"></script>
 	</head>
-	<script type="text/javascript">
-		window.onload = function(){
-			RJX_Toolset_STARTUP();
-		}
-	</script>
 	<body>
 		<!-- Main Div -->
 		<div id="MAIN_DIV" class="MAIN_DIV_CANVAS">
@@ -76,7 +71,8 @@
 					<div class="SEPARADOR"></div>
 					Last Backup: <font id="LBL_LAST_BCK" class="adjustText">N/A</font>
 					<input type="button" class="BTN_SETTINGS" value="Backup Settings" onclick="RJX_backupSys();"><br>
-					<input type="button" class="BTN_SETTINGS" value="Restore Settings" onclick="RJX_restoreSys();">
+					<input type="button" class="BTN_SETTINGS" value="Restore Settings" onclick="RJX_restoreSys();"><br>
+					<input type="button" class="BTN_SETTINGS" value="Set backup file" onclick="RJX_setBackupFile();">
 				</div>
 				<!-- Wait Menu -->
 				<div class="inner_infos none" id="DIV_ID_3">

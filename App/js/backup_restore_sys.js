@@ -37,8 +37,7 @@ function RJX_backupSys(){
 		}, 100);
 	} else {
 		document.getElementById('LBL_NAND_EXISTS').innerHTML = 'No';
-		RJX_addLog('WARN - There is no EMU settings on this machine!');
-		RJX_addLog('Open EMU first and then run this application');
+		RJX_addLog('WARN - There is no EMU settings on this machine - Open EMU first and then run this application!');
 	}
 }
 function RJX_restoreSys(){
@@ -63,5 +62,16 @@ function RJX_restoreSys(){
 				RJX_MENU(1);
 			}
 		}, 100);
+	}
+}
+function RJX_setBackupFile(){
+	var ask = prompt('Please insert the path for your backup file');
+	if (ask !== null && ask !== ''){
+		if (APP_FS.existsSync(ask) !== false){
+			$('#BTN_EMU_RES').css({'display': 'inline'});
+			RJX_LATEST_BCK = RJX_getFileName(ask).toUpperCase() + '.zip';
+			localStorage.setItem('RJX_BCK_FILE', RJX_LATEST_BCK);
+			document.getElementById('LBL_LAST_BCK').innerHTML = RJX_LATEST_BCK;
+		}
 	}
 }

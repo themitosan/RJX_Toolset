@@ -1,14 +1,12 @@
 /*
 	RJX_Toolset
 	boot.js
-
-	Vars
 */
-var APP_FS;
-var APP_PATH;
+// Vars
 var APP_LOG = '';
 var APP_CONGRATZ = 0;
-var APP_VERSION = '1.1.8';
+var APP_FS, APP_PATH;
+var APP_VERSION = '1.1.9';
 var MAIN_exludeFileFormats = [
 	'.xci',
 	'.nsp',
@@ -18,37 +16,28 @@ var MAIN_exludeFileFormats = [
 ];
 // Download
 var DOWNLOAD_PG = 0;
-var DOWNLOAD_LENGTH;
-var DOWNLOAD_RUNNING;
-var DOWNLOAD_REQUEST;
-var DOWNLOAD_RESPONSE;
-var DOWNLOAD_COMPLETE;
-var DOWNLOAD_STATUSCODE;
+var DOWNLOAD_LENGTH, DOWNLOAD_RUNNING, DOWNLOAD_REQUEST, DOWNLOAD_RESPONSE, DOWNLOAD_COMPLETE, DOWNLOAD_STATUSCODE;
 // Notify
 var RJX_NOTIFIED = false;
 var RJX_SHOW_NOTIFY = false;
 //
-var RJX_7Z_PATH;
-var RJX_APPV_XML;
-var RJX_LATEST_BCK;
-var EXTERNAL_APP_PID;
-var RJX_TEMP_INTERVAL;
 var RJX_NAND_PATH = '';
 var RJX_EMUPATH = 'N/A';
 var RJX_DOTPATH = 'N/A';
 var RJX_BUILD_METHOD = 0;
 var RJX_UPDATING = false;
-var EXTERNAL_APP_RUNNING;
-var EXTERNAL_APP_EXITCODE;
-var RJX_INTERNAL_INTERVAL;
 var RJX_BRANCH = 'master';
 var RJX_LAST_UPDATE = 'N/A';
 var RJX_DECOMP_SHARE = false;
 var RJX_CURRENT_DOTVER = '3.1';
 var RJX_logonText = 'RJX_Toolset - Ver. ' + APP_VERSION;
+var RJX_7Z_PATH, RJX_APPV_XML, RJX_LATEST_BCK, EXTERNAL_APP_PID, RJX_TEMP_INTERVAL, EXTERNAL_APP_RUNNING, EXTERNAL_APP_EXITCODE, RJX_INTERNAL_INTERVAL;
 /*
 	Functions
 */
+window.onload = function(){
+	RJX_Toolset_STARTUP();
+}
 function RJX_getFileName(file){
 	if (file !== '' && file !== undefined){
 		var c = 0;
@@ -146,7 +135,7 @@ function RJX_checkVars(){
 		} else {
 			$('#BTN_EMU_BCK').css({'display': 'none'});
 			document.getElementById('LBL_NAND_EXISTS').innerHTML = 'No';
-			RJX_addLog('WARN: There is no EMU settings on this machine!<br>Open EMU first and then run this application!');
+			RJX_addLog('WARN - There is no EMU settings on this machine - Open EMU first and then run this application!');
 		}
 		if (RJX_LATEST_BCK !== '' && RJX_LATEST_BCK !== null){
 			if (APP_FS.existsSync(APP_PATH + '\\Backup\\' + RJX_LATEST_BCK) !== false){
@@ -155,7 +144,8 @@ function RJX_checkVars(){
 			} else {
 				$('#BTN_EMU_RES').css({'display': 'none'});
 				document.getElementById('LBL_LAST_BCK').innerHTML = 'Unable to find last backup! (' + RJX_LATEST_BCK + ')';
-				RJX_addLog('Unable to find ' + RJX_LATEST_BCK);
+				RJX_addLog('WARN - Unable to find ' + RJX_LATEST_BCK);
+				RJX_logSeparator();
 			}
 		} else {
 			$('#BTN_EMU_RES').css({'display': 'none'});

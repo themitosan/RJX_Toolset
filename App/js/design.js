@@ -151,6 +151,10 @@ function RJX_SET_COMP_METHOD(){
 	RJX_BUILD_METHOD = document.getElementById('SET_UPDATE_METHOD').value;
 	localStorage.setItem('RJX_BUILD_METHOD', RJX_BUILD_METHOD);
 }
+function RJX_SET_RUN_METHOD(){
+	RJX_RUN_METHOD = document.getElementById('SET_RUN_METHOD').value;
+	localStorage.setItem('RJX_RUN_METHOD', RJX_RUN_METHOD);
+}
 function DESIGN_CHECKBOX(eName){
 	var chk = JSON.parse(document.getElementById(eName).checked);
 	if (chk === false){

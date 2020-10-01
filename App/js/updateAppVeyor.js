@@ -2,13 +2,8 @@
 	RJX_Toolset
 	updateAppVeyor.js
 */
-var BUILD_JSON;
-var RJX_UPFILE;
-var RJX_FETCH_TICK;
-var RJX_GOODLINK = '';
-var RJX_APPV_DOWN_URL = '';
-var RYU_TRUSTED_DEVS = [
-	'Ac_K', 'gdkchan'
+var BUILD_JSON, RJX_UPFILE, RJX_FETCH_TICK, RJX_GOODLINK = '', RJX_APPV_DOWN_URL = '', RYU_TRUSTED_DEVS = [
+	'Ac_K', 'gdkchan', 'HorrorTroll', 'riperiperi', 'Mary', 'Xpl0itR'
 ];
 /*
 	Functions
@@ -44,8 +39,7 @@ function RJX_getLastBuildInfo(showLog){
 */
 function RJX_updateFromAppVeyor(){
 	RJX_logSeparator();
-	var APPV_CANUPDATE = true;
-	var APPV_CANT_REASON = '';
+	var APPV_CANUPDATE = true, APPV_CANT_REASON = '';
 	// Checks
 	if (BUILD_JSON.build.jobs[0].status !== 'success'){
 		APPV_CANUPDATE = false;
@@ -130,8 +124,8 @@ function RJX_APPV_decompressEmu(){
 function RJX_APPV_moveEmu(){
 	clearInterval(RJX_TEMP_INTERVAL);
 	RJX_UPDATE_PROGRESSBAR('80%', 0);
-	RJX_UPDATE_WAIT('Moving emulator files');
 	RJX_addLog('Moving emulator files...');
+	RJX_UPDATE_WAIT('Moving emulator files');
 	RJX_runExternalSoftware('cmd', ['/C', 'xcopy', APP_PATH + '\\Update\\publish\\', RJX_EMUPATH, '/E', '/H', '/C', '/I', '/Y']);
 	RJX_TEMP_INTERVAL = setInterval(function(){
 		if (EXTERNAL_APP_RUNNING === false){

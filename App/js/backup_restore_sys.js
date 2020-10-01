@@ -2,9 +2,17 @@
 	RJX_Toolset
 	backup_restore_sys.js
 */
+/*
+	Functions
+*/
 function RJX_backupSys(){
-	RJX_NAND_PATH = nw.App.dataPath.replace('Local\\RJX_Toolset\\User Data\\Default', 'Roaming\\Ryujinx\\');
-	if (APP_FS.existsSync(RJX_NAND_PATH) !== false){
+	if (RJX_RUN_METHOD === 0){
+		RJX_NAND_PATH = nw.App.dataPath.replace('Local\\RJX_Toolset\\User Data\\Default', 'Roaming\\Ryujinx\\');
+	}
+	if (RJX_RUN_METHOD === 1){
+		RJX_NAND_PATH = APP_PATH + '\\EmuAppData';
+	}
+	if (APP_FS.existsSync(RJX_NAND_PATH) !== false && APP_FS.readdirSync(RJX_NAND_PATH).length !== 0){
 		RJX_UPDATING = true;
 		RJX_logSeparator();
 		RJX_CALL_WAIT('Compressing EMU Settings<br><i>(This may take a while)</i>');
@@ -48,7 +56,12 @@ function RJX_restoreSys(){
 		RJX_CALL_WAIT('Restoring EMU Settings<br><i>(This may take a while)</i>');
 		RJX_addLog('Restore - Decompressing Files...');
 		process.chdir(APP_PATH + '\\Backup');
-		RJX_runExternalSoftware(RJX_7Z_PATH, ['x', bckFile, '-o' + RJX_NAND_PATH.replace('Ryujinx\\', ''), '-aoa']);
+		if (RJX_RUN_METHOD === 0){
+			RJX_runExternalSoftware(RJX_7Z_PATH, ['x', bckFile, '-o' + RJX_NAND_PATH.replace('Ryujinx\\', ''), '-aoa']);
+		}
+		if (RJX_RUN_METHOD === 1){
+			RJX_runExternalSoftware(RJX_7Z_PATH, ['x', bckFile, '-o' + APP_PATH + '\\EmuAppData', '-aoa']);
+		}
 		RJX_TEMP_INTERVAL = setInterval(function(){
 			if (EXTERNAL_APP_RUNNING !== false){
 				console.log('Process - Waiting 7z...');
@@ -65,13 +78,15 @@ function RJX_restoreSys(){
 	}
 }
 function RJX_setBackupFile(){
-	var ask = prompt('Please insert the path for your backup file');
-	if (ask !== null && ask !== ''){
-		if (APP_FS.existsSync(ask) !== false){
-			$('#BTN_EMU_RES').css({'display': 'inline'});
-			RJX_LATEST_BCK = RJX_getFileName(ask).toUpperCase() + '.zip';
-			localStorage.setItem('RJX_BCK_FILE', RJX_LATEST_BCK);
-			document.getElementById('LBL_LAST_BCK').innerHTML = RJX_LATEST_BCK;
+	RJX_FILE_LOAD('.zip', function(ask){
+		if (ask !== null && ask !== ''){
+			if (APP_FS.existsSync(ask) !== false){
+				$('#BTN_EMU_RES').css({'display': 'inline'});
+				document.getElementById('LBL_LAST_BCK').title = ask;
+				RJX_LATEST_BCK = RJX_getFileName(ask).toUpperCase() + '.zip';
+				localStorage.setItem('RJX_BCK_FILE', RJX_LATEST_BCK);
+				document.getElementById('LBL_LAST_BCK').innerHTML = RJX_LATEST_BCK;
+			}
 		}
-	}
+	});
 }

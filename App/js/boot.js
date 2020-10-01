@@ -3,10 +3,7 @@
 	boot.js
 */
 // Vars
-var APP_LOG = '';
-var APP_CONGRATZ = 0;
-var APP_FS, APP_PATH;
-var APP_VERSION = '1.1.9';
+var APP_LOG = '', APP_CONGRATZ = 0, APP_FS, APP_PATH, APP_VERSION = '1.2.0';
 var MAIN_exludeFileFormats = [
 	'.xci',
 	'.nsp',
@@ -21,16 +18,7 @@ var DOWNLOAD_LENGTH, DOWNLOAD_RUNNING, DOWNLOAD_REQUEST, DOWNLOAD_RESPONSE, DOWN
 var RJX_NOTIFIED = false;
 var RJX_SHOW_NOTIFY = false;
 //
-var RJX_NAND_PATH = '';
-var RJX_EMUPATH = 'N/A';
-var RJX_DOTPATH = 'N/A';
-var RJX_BUILD_METHOD = 0;
-var RJX_UPDATING = false;
-var RJX_BRANCH = 'master';
-var RJX_LAST_UPDATE = 'N/A';
-var RJX_DECOMP_SHARE = false;
-var RJX_CURRENT_DOTVER = '3.1';
-var RJX_logonText = 'RJX_Toolset - Ver. ' + APP_VERSION;
+var RJX_NAND_PATH = '', RJX_EMUPATH = 'N/A', RJX_DOTPATH = 'N/A', RJX_BUILD_METHOD = 0, RJX_RUN_METHOD = 0, RJX_UPDATING = false, RJX_BRANCH = 'master', RJX_LAST_UPDATE = 'N/A', RJX_DECOMP_SHARE = false, RJX_CURRENT_DOTVER = '3.1', RJX_logonText = 'RJX_Toolset - Ver. ' + APP_VERSION;
 var RJX_7Z_PATH, RJX_APPV_XML, RJX_LATEST_BCK, EXTERNAL_APP_PID, RJX_TEMP_INTERVAL, EXTERNAL_APP_RUNNING, EXTERNAL_APP_EXITCODE, RJX_INTERNAL_INTERVAL;
 /*
 	Functions
@@ -40,8 +28,7 @@ window.onload = function(){
 }
 function RJX_getFileName(file){
 	if (file !== '' && file !== undefined){
-		var c = 0;
-		var removePath = file.toLowerCase().split(/(\\|\/)/g).pop();
+		var c = 0, removePath = file.toLowerCase().split(/(\\|\/)/g).pop();
 		while (c < MAIN_exludeFileFormats.length){
 			removePath = removePath.replace(MAIN_exludeFileFormats[c], '');
 			c++;
@@ -50,7 +37,7 @@ function RJX_getFileName(file){
 	}
 }
 function RJX_Toolset_STARTUP(){
-	try{
+	try {
 		APP_FS = require('fs');
 		APP_PATH = process.cwd();
 		RJX_addLog(RJX_logonText);
@@ -69,6 +56,9 @@ function RJX_Toolset_STARTUP(){
 		if (APP_FS.existsSync(APP_PATH + '\\Backup') !== true){
 			process.chdir(APP_PATH);
 			APP_FS.mkdirSync(APP_PATH + '\\Backup');
+		}
+		if (APP_FS.existsSync(APP_PATH + '\\EmuAppData') !== true){
+			APP_FS.mkdirSync(APP_PATH + '\\EmuAppData');
 		}
 		if (APP_FS.existsSync(APP_PATH + '\\Update\\RJX_CODE.zip') === true){
 			APP_FS.unlinkSync(APP_PATH + '\\Update\\RJX_CODE.zip');
@@ -94,7 +84,7 @@ function RJX_Toolset_STARTUP(){
 		if (proceed === true){
 			RJX_checkVars();
 		}
-	} catch (err){
+	} catch (err) {
 		RJX_addLog('ERROR ON STARTUP!');
 		RJX_addLog('Reason: ' + err);
 		console.error('ERROR ON STARTUP!\nReason: ' + err);
@@ -117,17 +107,28 @@ function RJX_checkVars(){
 		RJX_LATEST_BCK = localStorage.getItem('RJX_BCK_FILE');
 		RJX_LAST_UPDATE = localStorage.getItem('RJX_LAST_UPDATE');
 		RJX_NOTIFIED = JSON.parse(localStorage.getItem('RJX_NOTIFIED'));
+		RJX_RUN_METHOD = parseInt(localStorage.getItem('RJX_RUN_METHOD'));
 		RJX_BUILD_METHOD = parseInt(localStorage.getItem('RJX_BUILD_METHOD'));
 		RJX_SHOW_NOTIFY = JSON.parse(localStorage.getItem('RJX_SHOW_NOTIFY'));
 		RJX_DECOMP_SHARE = JSON.parse(localStorage.getItem('RJX_DECOMP_SHARE'));
+		// Fix NaN Values
+		if (RJX_RUN_METHOD === NaN){
+			RJX_RUN_METHOD = 0;
+		}
 		document.getElementById('LBL_APP_VER').innerHTML = APP_VERSION;
 		document.getElementById('LBL_RYU_PATH').innerHTML = RJX_EMUPATH;
 		document.getElementById('LBL_GH_BRANCH').innerHTML = RJX_BRANCH;
+		document.getElementById('SET_RUN_METHOD').value = RJX_RUN_METHOD;
 		document.getElementById('LBL_DOTNET_PATH').innerHTML = RJX_DOTPATH;
 		document.getElementById('SET_UPDATE_METHOD').value = RJX_BUILD_METHOD;
 		document.getElementById('CHECK_NOTIFY_DESK').checked = RJX_SHOW_NOTIFY;
 		document.getElementById('CHECK_DECOMP_SHARE').checked = RJX_DECOMP_SHARE;
-		RJX_NAND_PATH = nw.App.dataPath.replace('Local\\RJX_Toolset\\User Data\\Default', 'Roaming\\Ryujinx\\');
+		if (RJX_RUN_METHOD === 0){
+			RJX_NAND_PATH = nw.App.dataPath.replace('Local\\RJX_Toolset\\User Data\\Default', 'Roaming\\Ryujinx\\');
+		}
+		if (RJX_RUN_METHOD === 1){
+			RJX_NAND_PATH = APP_PATH + '\\EmuAppData';
+		}
 		if (APP_FS.existsSync(RJX_NAND_PATH) !== false){
 			$('#BTN_EMU_BCK').css({'display': 'inline'});
 			document.getElementById('LBL_NAND_EXISTS').innerHTML = 'Yes';
@@ -149,6 +150,9 @@ function RJX_checkVars(){
 			}
 		} else {
 			$('#BTN_EMU_RES').css({'display': 'none'});
+		}
+		if (APP_FS.existsSync(RJX_EMUPATH) !== false){
+			$('#BTN_BIG_RUN').css({'display': 'inline'});
 		}
 		RJX_APPV_XML = 'https://ci.appveyor.com/api/projects/gdkchan/ryujinx/branch/' + RJX_BRANCH;
 		if (navigator.onLine === false){
@@ -174,7 +178,7 @@ function RJX_CHANGE_BRANCH(){
 	if (ask !== null){
 		if (ask === ''){
 			RJX_BRANCH = 'master';
-			RJX_addLog('INFO - Invalid Branch! Setting GitHub branch "master"');
+			RJX_addLog('INFO - Invalid Branch! Setting GitHub branch \"master\"');
 		} else {
 			RJX_BRANCH = ask;
 		}
@@ -184,30 +188,32 @@ function RJX_CHANGE_BRANCH(){
 	}
 }
 function RJX_CHANGE_DOT(){
-	var ask = prompt('Please insert new DotNet (' + RJX_CURRENT_DOTVER + ') exec path below:');
-	if (ask !== null && ask !== ''){
-		if (APP_FS.existsSync(ask) !== false){
-			RJX_DOTPATH = ask;
-			localStorage.setItem('RJX_DOTPATH', RJX_DOTPATH);
-			document.getElementById('LBL_DOTNET_PATH').innerHTML = RJX_DOTPATH;
-			RJX_addLog('INFO - New DotNet path: ' + RJX_DOTPATH);
-		} else {
-			RJX_addLog('INFO - Unable to find executable!');
+	RJX_FILE_LOAD('.exe', function(ask){
+		if (ask !== null && ask !== ''){
+			if (APP_FS.existsSync(ask) !== false){
+				RJX_DOTPATH = ask;
+				localStorage.setItem('RJX_DOTPATH', RJX_DOTPATH);
+				document.getElementById('LBL_DOTNET_PATH').innerHTML = RJX_DOTPATH;
+				RJX_addLog('INFO - New DotNet path: ' + RJX_DOTPATH);
+			} else {
+				RJX_addLog('INFO - Unable to find executable!');
+			}
 		}
-	}
+	});
 }
 function RJX_CHANGE_EMUPATH(){
-	var ask = prompt('Please insert new Ryujinx exe path below:');
-	if (ask !== null && ask !== ''){
-		if (APP_FS.existsSync(ask) !== false){
-			RJX_EMUPATH = ask;
-			localStorage.setItem('RJX_PATH', RJX_EMUPATH);
-			document.getElementById('LBL_RYU_PATH').innerHTML = RJX_EMUPATH;
-			RJX_addLog('INFO - New Ryujinx path: ' + RJX_EMUPATH);
-		} else {
-			RJX_addLog('INFO - Unable to find ryujinx executable!');
+	RJX_FILE_LOAD('.exe', function(ask){
+		if (ask !== null && ask !== ''){
+			if (APP_FS.existsSync(ask) !== false){
+				RJX_EMUPATH = ask;
+				localStorage.setItem('RJX_PATH', RJX_EMUPATH);
+				document.getElementById('LBL_RYU_PATH').innerHTML = RJX_EMUPATH;
+				RJX_addLog('INFO - New Ryujinx path: ' + RJX_EMUPATH);
+			} else {
+				RJX_addLog('INFO - Unable to find ryujinx executable!');
+			}
 		}
-	}
+	});
 }
 function RJX_UPDATE(){
 	if (RJX_BUILD_METHOD === 0){
@@ -234,13 +240,7 @@ function RJX_WIP(){
 	window.alert('WARN - THIS IS WIP!');
 }
 function RJX_currentTime(){
-	var t = new Date;
-	var d = t.getDate();
-	var h = t.getHours();
-	var s = t.getSeconds();
-	var y = t.getFullYear();
-	var mi = t.getMinutes();
-	var m = t.getMonth() + 1;
+	var t = new Date, d = t.getDate(), h = t.getHours(), s = t.getSeconds(), y = t.getFullYear(), mi = t.getMinutes(), m = t.getMonth() + 1;
 	if (d.toString().length < 2){
 		d = '0' + t.getDate();
 	}
@@ -277,7 +277,7 @@ function RJX_showNotify(title, text, timeDisplay){
 		});
 		setTimeout(NOTIFY.close.bind(NOTIFY), timeDisplay);
 	}
-	catch(err){
+	catch (err) {
 		RJX_addLog('(Notification) ERROR: ' + err);
 		console.error('(Notification) ERROR - ' + err);
 	}
@@ -319,43 +319,59 @@ function RJX_runExternalSoftware(exe, args, showLog){
 				return code;
 			}
 		});
-	} catch (err){
+	} catch (err) {
 		RJX_addLog('ERROR - Something went wrong while running ' + RJX_getFileName(exe) + '!');
 		RJX_addLog('Details: ' + err);
 	}
 }
 /*
-	Save Files
+	Load / Save Files
 */
 function RJX_SAVE_CONFS(){
 	RJX_SHOW_NOTIFY = JSON.parse(document.getElementById('CHECK_NOTIFY_DESK').checked);
 	RJX_DECOMP_SHARE = JSON.parse(document.getElementById('CHECK_DECOMP_SHARE').checked);
-	/*
-		End
-	*/
+	// End
 	localStorage.setItem('RJX_BCK_FILE', '');
 	localStorage.setItem('RJX_PATH', RJX_EMUPATH);
 	localStorage.setItem('RJX_BRANCH', RJX_BRANCH);
 	localStorage.setItem('RJX_DOTPATH', RJX_DOTPATH);
 	localStorage.setItem('RJX_NOTIFIED', RJX_NOTIFIED);
+	localStorage.setItem('RJX_RUN_METHOD', RJX_RUN_METHOD);
 	localStorage.setItem('RJX_LAST_UPDATE', RJX_LAST_UPDATE);
 	localStorage.setItem('RJX_SHOW_NOTIFY', RJX_SHOW_NOTIFY);
 	localStorage.setItem('RJX_BUILD_METHOD', RJX_BUILD_METHOD);
 	localStorage.setItem('RJX_DECOMP_SHARE', RJX_DECOMP_SHARE);
 	localStorage.setItem('RJX_SETUP', true);
 }
+function RJX_FILE_LOAD(extension, functionEval){
+	if (functionEval !== undefined){
+		if (extension === ''){
+			extension = '.*';
+		}
+		document.getElementById('RJX_FILE_LOAD_DOM').accept = extension;
+		$('#RJX_FILE_LOAD_DOM').trigger('click');
+		document.getElementById('RJX_FILE_LOAD_DOM').onchange = function(){
+			var cFile = document.getElementById('RJX_FILE_LOAD_DOM').files[0];
+			if (cFile.path !== null && cFile.path !== undefined && cFile.path !== ''){
+				functionEval(cFile.path);
+				document.getElementById('RJX_FILE_LOAD_DOM').value = '';
+				document.getElementById('RJX_FILE_LOAD_DOM').accept = '';
+			}
+		}
+	}
+}
 /*
 	Download Files
 */
-function RJX_downloadFile(url, nomedoarquivo, showLog){
+function RJX_downloadFile(url, fileName, showLog){
 	DOWNLOAD_PG = 0;
 	DOWNLOAD_COMPLETE = false;
 	const http = require('https');
-	const file = APP_FS.createWriteStream(nomedoarquivo);
+	const file = APP_FS.createWriteStream(fileName);
 	if (showLog !== false){
 		RJX_addLog('DOWN - Starting download: <font class="user-can-select">' + url + '</font>');
 	}
-	console.info('DOWN - Download path: ' + nomedoarquivo);
+	console.info('DOWN - Download path: ' + fileName);
 	const request = http.get(url, function(response){
 		response.pipe(file);
 		DOWNLOAD_RUNNING = true;
@@ -363,7 +379,7 @@ function RJX_downloadFile(url, nomedoarquivo, showLog){
 		DOWNLOAD_RESPONSE = response;
 		RJX_GOODLINK = response.headers.location;
 		DOWNLOAD_STATUSCODE = response.statusCode;
-		DOWNLOAD_LENGTH = parseInt(response.headers["content-length"]);
+		DOWNLOAD_LENGTH = parseInt(response.headers['content-length']);
 		response.on('data', (chunk) => {
 			DOWNLOAD_REQUEST = request;
 			DOWNLOAD_RESPONSE = response;
@@ -386,3 +402,14 @@ function RJX_downloadFile(url, nomedoarquivo, showLog){
 function RJX_deleteFolderRecursive(path){
 	RJX_runExternalSoftware('cmd', ['/C', 'rd', '/s', '/q', path]);
 };
+/*
+	Run EMU
+*/
+function RJX_RUN_EMU(){
+	if (RJX_RUN_METHOD === 0){
+		RJX_runExternalSoftware(RJX_EMUPATH + '\\Ryujinx.exe', [], true);
+	}
+	if (RJX_RUN_METHOD === 1){
+		RJX_runExternalSoftware(RJX_EMUPATH + '\\Ryujinx.exe', ['-r', APP_PATH + '\\EmuAppData'], true);
+	}
+}

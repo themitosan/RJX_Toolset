@@ -1,8 +1,7 @@
 /*
 	RJX_Toolset
 	backup_restore_sys.js
-*/
-/*
+
 	Functions
 */
 function RJX_backupSys(){

@@ -1,25 +1,21 @@
 /*
 	RJX_Toolset
 	boot.js
+
+	Variables
 */
-// Vars
-var APP_LOG = '', APP_CONGRATZ = 0, APP_FS, APP_PATH, APP_VERSION = '1.2.0';
-var MAIN_exludeFileFormats = [
-	'.xci',
-	'.nsp',
-	'.keys',
-	'.exe',
-	'.zip'
-];
-// Download
-var DOWNLOAD_PG = 0;
-var DOWNLOAD_LENGTH, DOWNLOAD_RUNNING, DOWNLOAD_REQUEST, DOWNLOAD_RESPONSE, DOWNLOAD_COMPLETE, DOWNLOAD_STATUSCODE;
-// Notify
-var RJX_NOTIFIED = false;
-var RJX_SHOW_NOTIFY = false;
-//
-var RJX_NAND_PATH = '', RJX_EMUPATH = 'N/A', RJX_DOTPATH = 'N/A', RJX_BUILD_METHOD = 0, RJX_RUN_METHOD = 0, RJX_UPDATING = false, RJX_BRANCH = 'master', RJX_LAST_UPDATE = 'N/A', RJX_DECOMP_SHARE = false, RJX_CURRENT_DOTVER = '3.1', RJX_logonText = 'RJX_Toolset - Ver. ' + APP_VERSION;
-var RJX_7Z_PATH, RJX_APPV_XML, RJX_LATEST_BCK, EXTERNAL_APP_PID, RJX_TEMP_INTERVAL, EXTERNAL_APP_RUNNING, EXTERNAL_APP_EXITCODE, RJX_INTERNAL_INTERVAL;
+var APP_LOG = '', APP_CONGRATZ = 0, APP_FS, APP_PATH, APP_VERSION = '1.3.0',
+	MAIN_exludeFileFormats = [
+		'.xci',
+		'.nsp',
+		'.keys',
+		'.exe',
+		'.zip'
+	],
+	RJX_LAST_UPDATE = 'N/A', RJX_DECOMP_SHARE = false, RJX_CURRENT_DOTVER = '3.1', RJX_logonText = 'RJX_Toolset - Ver. ' + APP_VERSION,
+	RJX_7Z_PATH, RJX_APPV_XML, RJX_LATEST_BCK, EXTERNAL_APP_PID, RJX_TEMP_INTERVAL, EXTERNAL_APP_RUNNING, EXTERNAL_APP_EXITCODE, RJX_INTERNAL_INTERVAL,
+	RJX_NOTIFIED = false, RJX_SHOW_NOTIFY = false, DOWNLOAD_PG = 0, DOWNLOAD_LENGTH, DOWNLOAD_RUNNING, DOWNLOAD_REQUEST, DOWNLOAD_RESPONSE, DOWNLOAD_COMPLETE, DOWNLOAD_STATUSCODE,
+	RJX_NAND_PATH = '', RJX_EMUPATH = 'N/A', RJX_DOTPATH = 'N/A', RJX_BUILD_METHOD = 0, RJX_RUN_METHOD = 0, RJX_UPDATING = false, RJX_BRANCH = 'master';
 /*
 	Functions
 */
@@ -300,12 +296,12 @@ function RJX_runExternalSoftware(exe, args, showLog){
 			RJX_addLog('Args: ' + tmpArgs);
 		}
 		ls.stdout.on('data', (data) => {
-			console.info('External Software - ' + data);
-			RJX_addLog('External Software - ' + data.replace('\n', '<br>'));
+			console.info(data.toString());
+			RJX_addLog(data.replace('\n', '<br>'));
 		});
 		ls.stderr.on('data', (data) => {
-			console.info('External Software - ' + data);
-			RJX_addLog('External Software - ' + data.replace('\n', '<br>'));
+			console.info(data.toString());
+			RJX_addLog(data.replace('\n', '<br>'));
 		});
 		ls.on('close', (code) => {
 			EXTERNAL_APP_PID = 0;
@@ -408,8 +404,7 @@ function RJX_deleteFolderRecursive(path){
 function RJX_RUN_EMU(){
 	if (RJX_RUN_METHOD === 0){
 		RJX_runExternalSoftware(RJX_EMUPATH + '\\Ryujinx.exe', [], true);
-	}
-	if (RJX_RUN_METHOD === 1){
+	} else {
 		RJX_runExternalSoftware(RJX_EMUPATH + '\\Ryujinx.exe', ['-r', APP_PATH + '\\EmuAppData'], true);
 	}
 }

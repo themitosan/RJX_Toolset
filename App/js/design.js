@@ -2,15 +2,9 @@
 	RJX_Toolset
 	design.js
 */
-var DESIGN_LASTMENU = 0;
-var DESIGN_MENU_HISTORY = [];
-var DESIGN_PROG_BAR_INTERVAL;
+var DESIGN_LASTMENU = 0, DESIGN_MENU_HISTORY = [], DESIGN_PROG_BAR_INTERVAL, INCLUDE_HTML_0 = '<div class="PB_MINI" id="PROGRESSBAR_0"></div>';
 /*
-	Includes
-*/
-var INCLUDE_HTML_0 = '<div class="PB_MINI" id="PROGRESSBAR_0"></div>';
-/*
-	Log
+	Functions
 */
 function RJX_scrollLog(){
 	document.getElementById('APP_LOG').scrollTop = document.getElementById('APP_LOG').scrollHeight;
@@ -33,7 +27,6 @@ function RJX_logSeparator(){
 */
 function RJX_MENU(menu){
 	if (menu !== DESIGN_LASTMENU){
-		// console.info('Call menu: ' + menu);
 		// About thing
 		if (menu === 0){
 			if (APP_CONGRATZ === 0){
